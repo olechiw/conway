@@ -2,14 +2,15 @@
 #include <chrono>
 #include <thread>
 #include "ConwayGameRenderer.h"
+
+// Our Project/SLN targets the Windows subsystem
+// This is only possible because we link to sfml-main.lib which defines main as WINMAIN when on windows
 int main()
 {
-    constexpr int WINDOW_WIDTH = 1000;
-    constexpr int WINDOW_HEIGHT = 1000;
+    constexpr int WINDOW_WIDTH = 2560;
+    constexpr int WINDOW_HEIGHT = 1440;
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Conway's Game of Life");
 
-    constexpr int ADDITIONAL_WIDTH = 100;
-    constexpr int OFF = ADDITIONAL_WIDTH / 2;
     ConwayGame game;
 
     game.setAlive(0, 1);
@@ -29,7 +30,7 @@ int main()
         }
 
         window.clear();
-        renderer.render(window, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, game);
+        renderer.render(window, 1000, 1000, WINDOW_WIDTH / 2 - 500, WINDOW_HEIGHT / 2 - 500, game);
         window.display();
         // std::this_thread::sleep_for(std::chrono::milliseconds(500));
         game.step();
