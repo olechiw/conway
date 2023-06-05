@@ -1,27 +1,25 @@
 #include "ConwayGameRenderer.h"
 
-void ConwayGameRenderer::render(
+void ConwayRenderer::render(
 	sf::RenderWindow& window,
 	size_t screenWidth,
 	size_t screenHeight,
 	size_t screenX,
 	size_t screenY,
-	const FiniteConwayGame::Board &board)
+	const ConwayGame& game)
 {
-	assert(!board.empty() && !board.back().empty());
-	const auto rectangleWidth = screenWidth / board.back().size();
-	const auto rectangleHeight = screenHeight / board.size();
+	const long gameSize = game.size();
+	const auto rectangleWidth = screenWidth / (gameSize * 2);
+	const auto rectangleHeight = screenHeight / (gameSize * 2);
 	assert(rectangleWidth > 1 && rectangleHeight > 1);
 	sf::RectangleShape aliveCellRectangle(sf::Vector2f(rectangleWidth - 1, rectangleHeight - 1));
 	aliveCellRectangle.setFillColor(sf::Color::Green);
 
 	window.clear();
-	for (size_t x = 0; x < board.size(); ++x) {
-		for (size_t y = 0; y < board.back().size(); ++y) {
-			if (board[x][y] == FiniteConwayGame::Alive) {
-				aliveCellRectangle.setPosition(y * rectangleHeight, x * rectangleWidth);
-				window.draw(aliveCellRectangle);
-			}
-		}
+	const auto xOffset = screenWidth / 2;
+	const auto yOffset = screenHeight / 2;
+	for (const auto& [cellPosition, _] : game.getAliveCells()) {
+		aliveCellRectangle.setPosition(cellPosition.y * rectangleHeight + yOffset, cellPosition.x * rectangleWidth + xOffset);
+		window.draw(aliveCellRectangle);
 	}
 }

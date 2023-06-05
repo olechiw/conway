@@ -135,12 +135,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConwayGameRenderer.cpp" />
-    <ClCompile Include="FiniteConwayGame.cpp" />
+    <ClCompile Include="ConwayGame.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConwayGameRenderer.h" />
-    <ClInclude Include="FiniteConwayGame.h" />
+    <ClInclude Include="ConwayGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,2 +1,14 @@
-﻿  main.cpp
+﻿  ConwayGameRenderer.cpp
+C:\Users\Jakob\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\ConwayGameRenderer.cpp(15,89): warning C4244: 'argument': conversion from 'size_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Jakob\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\ConwayGameRenderer.cpp(15,68): warning C4244: 'argument': conversion from 'size_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Jakob\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\ConwayGameRenderer.cpp(22,110): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+C:\Users\Jakob\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\ConwayGameRenderer.cpp(22,67): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
   ConwaysGameOfLife.vcxproj -> C:\Users\Jakob\source\repos\ConwaysGameOfLife\x64\Debug\ConwaysGameOfLife.exe

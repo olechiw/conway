@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FiniteConwayGame.cpp">
+    <ClCompile Include="ConwayGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConwayGameRenderer.cpp">
@@ -26,7 +26,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FiniteConwayGame.h">
+    <ClInclude Include="ConwayGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConwayGameRenderer.h">

@@ -8,15 +8,16 @@ int main()
     constexpr int WINDOW_HEIGHT = 1000;
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Conway's Game of Life");
 
-    FiniteConwayGame game(100, 100);
-    FiniteConwayGame::Board testBoard(100, std::vector<FiniteConwayGame::CellState>(100));
-    testBoard[49][51] = FiniteConwayGame::Alive;
-    testBoard[49][52] = FiniteConwayGame::Alive;
-    testBoard[50][50] = FiniteConwayGame::Alive;
-    testBoard[50][51] = FiniteConwayGame::Alive;
-    testBoard[51][51] = FiniteConwayGame::Alive;
-    game.setBoard(testBoard);
-    ConwayGameRenderer renderer;
+    constexpr int ADDITIONAL_WIDTH = 100;
+    constexpr int OFF = ADDITIONAL_WIDTH / 2;
+    ConwayGame game;
+
+    game.setAlive(0, 1);
+    game.setAlive(0, 2);
+    game.setAlive(1, 0);
+    game.setAlive(1, 1);
+    game.setAlive(2, 1);
+    ConwayRenderer renderer;
 
     while (window.isOpen())
     {
@@ -28,7 +29,7 @@ int main()
         }
 
         window.clear();
-        renderer.render(window, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, game.getBoard());
+        renderer.render(window, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, game);
         window.display();
         // std::this_thread::sleep_for(std::chrono::milliseconds(500));
         game.step();
