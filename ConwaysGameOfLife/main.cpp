@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QQuickWindow>
 #include <QElapsedTimer>
+#include <QQuickStyle>
 
 #include "ConwayGame.h"
 #include "ConwayCanvas.h"
@@ -24,6 +25,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<Meter>("Conway", 1, 0, "Meter");
 
     QGuiApplication app(argc, argv);
+
+    QQuickStyle::setStyle("Basic");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

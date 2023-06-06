@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Layouts
 import QtQuick.Controls
+// import QtQuick.Controls.Material
 import Conway 1.0
 
 Window {
@@ -30,12 +31,14 @@ Window {
         flow: GridLayout.TopToBottom
 
         RowLayout {
+            Layout.topMargin: 3
+            Layout.bottomMargin: 0
+            Layout.rightMargin: 3
+            Layout.leftMargin: 3
             StandardLabel {
-                Layout.leftMargin: 2
                 Layout.alignment: Qt.AlignLeft
-                Layout.fillWidth: true
                 id: fpsMeterLabel
-
+                Layout.fillWidth: true
                 Connections {
                     target: fpsMeter
                     function onMeterUpdated(value) {
@@ -43,8 +46,30 @@ Window {
                     }
                 }
             }
+            
+            RowLayout {
+                Layout.alignment: Qt.AlignCenter
+                Button {
+                text: "Restart"
+                Layout.alignment: Qt.AlignBottom
+                }
+                Button {
+                    text: "Pause/Play"
+                    Layout.alignment: Qt.AlignBottom
+                }
+                ColumnLayout {
+                    StandardLabel {
+                        text: "Minimum Simulation Time (ms)"
+                    }
+                    SpinBox {
+                        from: 0
+                        to: 1000
+                        Layout.alignment: Qt.AlignCenter
+                    }
+                }
+            }
+            
             StandardLabel {
-                Layout.leftMargin: 5
                 Layout.alignment: Qt.AlignRight
                 id: simulationMeterLabel
                 Connections {
