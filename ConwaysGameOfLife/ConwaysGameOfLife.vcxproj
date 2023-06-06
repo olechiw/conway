@@ -87,6 +87,7 @@
     <ClCompile Include="ConwayGame.cpp" />
     <ClCompile Include="ConwayCanvas.cpp" />
     <ClCompile Include="ConwayWorker.cpp" />
+    <ClCompile Include="FPSCounter.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="qmldir" />
     <QtRcc Include="qml.qrc" />
@@ -94,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConwayGame.h" />
+    <QtMoc Include="FPSCounter.h" />
     <QtMoc Include="ConwayWorker.h" />
     <QtMoc Include="ConwayCanvas.h" />
   </ItemGroup>

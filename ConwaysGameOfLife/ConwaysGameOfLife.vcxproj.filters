@@ -41,6 +41,9 @@
     <ClCompile Include="ConwayWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FPSCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConwayGame.h">
@@ -52,6 +55,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ConwayWorker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FPSCounter.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -1,13 +1,5 @@
 #include "ConwayGame.h"
 
-
-// Just noting these here
-static constexpr long long X_MAX = 2LL << 31;
-static constexpr long long X_MIN = -(2LL << 31);
-static constexpr long long Y_MAX = 2LL << 31;
-static constexpr long long Y_MIN = -(2LL << 31);
-
-
 static const std::vector<std::pair<int, int>> adjacentDirections = {
 	{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {-1, -1}, {1, -1}, {-1, 1}
 };
