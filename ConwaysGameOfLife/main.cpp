@@ -1,40 +1,40 @@
-#include <SFML/Graphics.hpp>
-#include <chrono>
-#include <thread>
-#include "ConwayGameRenderer.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QThread>
 
-// Our Project/SLN targets the Windows subsystem
-// This is only possible because we link to sfml-main.lib which defines main as WINMAIN when on windows
-int main()
+#include "ConwayGame.h"
+#include "ConwayCanvas.h"
+#include "ConwayWorker.h"
+
+int main(int argc, char *argv[])
 {
-    constexpr int WINDOW_WIDTH = 2560;
-    constexpr int WINDOW_HEIGHT = 1440;
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Conway's Game of Life");
+#if defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 
-    ConwayGame game;
+    qmlRegisterType<ConwayCanvas>("Conway", 1, 0, "ConwayCanvas");
 
-    game.setAlive(0, 1);
-    game.setAlive(0, 2);
-    game.setAlive(1, 0);
-    game.setAlive(1, 1);
-    game.setAlive(2, 1);
-    ConwayRenderer renderer;
+    QGuiApplication app(argc, argv);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
-        window.clear();
-        renderer.render(window, 1000, 1000, WINDOW_WIDTH / 2 - 500, WINDOW_HEIGHT / 2 - 500, game);
-        window.display();
-        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        game.step();
-    }
+    ConwayCanvas* canvas = engine.rootObjects().first()->findChild<ConwayCanvas*>("conwayCanvas");
 
-    return 0;
+    ConwayGame* game = new ConwayGame();
+    game->setAlive(1, 0);
+    game->setAlive(2, 0);
+    game->setAlive(0, 1);
+    game->setAlive(1, 1);
+    game->setAlive(1, 2);
+
+    ConwayWorker* worker = new ConwayWorker(game);
+    QObject::connect(worker, &ConwayWorker::gameUpdated, canvas, &ConwayCanvas::gameUpdated);
+    worker->start();
+
+    
+    return app.exec();
 }

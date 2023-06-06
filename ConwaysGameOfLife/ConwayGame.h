@@ -3,6 +3,8 @@
 #include <cassert>
 #include <unordered_map>
 
+#include <QMutex>
+
 class ConwayGame
 {
 public:
@@ -16,17 +18,21 @@ public:
 	struct CellPositionHash {
 		size_t operator()(const CellPosition& cell) const;
 	};
+
 	using Board = std::unordered_map<CellPosition, bool, CellPositionHash>;
-	long _size = 100;
-private:
-	Board _board;
-	Board _newBoard;
-	std::unordered_map<CellPosition, uint8_t, CellPositionHash> _adjacentCells;
-public:
-	const Board& getAliveCells() const;
-	long size() const;
+	struct State {
+		Board board;
+		long size{};
+	};
+
+	ConwayGame();
 	void setAlive(long x, long y, bool alive = true);
 	void step();
+	const State& getState() const;
+private:
 	void updateSize(const ConwayGame::CellPosition& cellPosition);
+	Board _workingCells;
+	State _latestState;
+	std::unordered_map<CellPosition, uint8_t, CellPositionHash> _adjacentCells;
 };
 

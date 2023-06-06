@@ -12,46 +12,46 @@ static const std::vector<std::pair<int, int>> adjacentDirections = {
 	{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {-1, -1}, {1, -1}, {-1, 1}
 };
 
+ConwayGame::ConwayGame()
+{
+	_latestState.size = 100;
+}
+
 void ConwayGame::setAlive(long x, long y, bool alive)
 {
-	if (_board[{x, y}] == alive) return;
-	_board[{x, y}] = alive;
-	updateSize({x, y});
-	for (const auto &[xDir, yDir] : adjacentDirections) {
+	if (_latestState.board[{x, y}] == alive) return;
+	_latestState.board[{x, y}] = alive;
+	updateSize({ x, y });
+	for (const auto& [xDir, yDir] : adjacentDirections) {
 		_adjacentCells[{x + xDir, y + yDir}] += (alive) ? 1 : -1;
 	}
 }
 
 void ConwayGame::step()
 {
-	_newBoard.clear();
+	_workingCells.clear();
 	for (auto& [cellPosition, value] : _adjacentCells) {
-		if (value == 3 || (value == 2 && _board[cellPosition]))
-			_newBoard[{cellPosition.x, cellPosition.y}] = true;
+		if (value == 3 || (value == 2 && _latestState.board[cellPosition]))
+			_workingCells[{cellPosition.x, cellPosition.y}] = true;
 	}
 	_adjacentCells.clear();
-	for (auto& [cellPosition, alive] : _newBoard) {
+	for (auto& [cellPosition, alive] : _workingCells) {
 		updateSize(cellPosition);
 		for (const auto& [xDir, yDir] : adjacentDirections) {
 			_adjacentCells[{cellPosition.x + xDir, cellPosition.y + yDir}]++;
 		}
 	}
-	std::swap(_newBoard, _board);
+	
+	std::swap(_latestState.board, _workingCells);
 }
 
-void ConwayGame::updateSize(const ConwayGame::CellPosition &cellPosition) {
-	if (abs(cellPosition.y) > _size)
-		_size = abs(cellPosition.y);
-	if (abs(cellPosition.x) > _size)
-		_size = abs(cellPosition.x);
+void ConwayGame::updateSize(const ConwayGame::CellPosition& cellPosition) {
+	_latestState.size = std::max(abs(cellPosition.x), _latestState.size);
+	_latestState.size = std::max(abs(cellPosition.y), _latestState.size);
 }
 
-long ConwayGame::size() const {
-	return _size;
-}
-
-const ConwayGame::Board& ConwayGame::getAliveCells() const {
-	return _board;
+const ConwayGame::State &ConwayGame::getState() const {
+	return _latestState;
 }
 
 size_t ConwayGame::CellPositionHash::operator()(const ConwayGame::CellPosition& cell) const
