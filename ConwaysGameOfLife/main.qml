@@ -12,15 +12,15 @@ Window {
     objectName: "mainWindow"
     id: mainWindow
 
-    FPSCounter {
-        id: fpsCounter
+    Meter {
+        id: fpsMeter
+    }
+    Meter {
+        id: simulationMeter
     }
 
     Component.onCompleted: {
-        fpsCounterLabel.text = "loading"
-        mainWindow.beforeRendering.connect(fpsCounter.logFrame);
-        fpsCounterLabel.text = "connected"
-        console.log("Connected")
+        mainWindow.beforeRendering.connect(fpsMeter.increment);
     }
 
     GridLayout {
@@ -29,34 +29,34 @@ Window {
         flow: GridLayout.TopToBottom
 
         RowLayout {
-
-            Label {
-                text: "FPS: "
-                font.pixelSize: 26
-                color: "black"
+            StandardLabel {
                 Layout.leftMargin: 2
-                Layout.rightMargin: 0
-            }
-            Label {
-                text: "60"
-                font.pixelSize: 26
-                color: "black"
-                Layout.leftMargin: 0
-                id: fpsCounterLabel
-
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
+                id: fpsMeterLabel
 
                 Connections {
-                    target: fpsCounter
-                    function onFpsUpdated(value) {
-                        fpsCounterLabel.text = value
+                    target: fpsMeter
+                    function onMeterUpdated(value) {
+                        fpsMeterLabel.text = Math.floor(value) + " FPS"
                     }
                 }
             }
+            StandardLabel {
+                Layout.leftMargin: 5
+                Layout.alignment: Qt.AlignRight
+                id: simulationCounterLabel
+                Connections {
+                }
+                text: "Simulations per second"
+            }
+            
         }
 
 
         ConwayCanvas {
             objectName: "conwayCanvas"
+            id: conwayCanvas
             Layout.fillWidth: true
             Layout.fillHeight: true
         }

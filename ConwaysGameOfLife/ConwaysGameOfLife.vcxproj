@@ -35,6 +35,7 @@
     <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>quick;core</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtQMLDebugEnable>true</QtQMLDebugEnable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.5.1_msvc2019_64</QtInstall>
@@ -87,15 +88,16 @@
     <ClCompile Include="ConwayGame.cpp" />
     <ClCompile Include="ConwayCanvas.cpp" />
     <ClCompile Include="ConwayWorker.cpp" />
-    <ClCompile Include="FPSCounter.cpp" />
+    <ClCompile Include="Meter.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="qmldir" />
+    <None Include="StandardLabel.qml" />
     <QtRcc Include="qml.qrc" />
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConwayGame.h" />
-    <QtMoc Include="FPSCounter.h" />
+    <QtMoc Include="Meter.h" />
     <QtMoc Include="ConwayWorker.h" />
     <QtMoc Include="ConwayCanvas.h" />
   </ItemGroup>

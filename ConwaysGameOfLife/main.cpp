@@ -7,7 +7,7 @@
 #include "ConwayGame.h"
 #include "ConwayCanvas.h"
 #include "ConwayWorker.h"
-#include "FPSCounter.h"
+#include "Meter.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 #endif
 
     qmlRegisterType<ConwayCanvas>("Conway", 1, 0, "ConwayCanvas");
-    qmlRegisterType<FPSCounter>("Conway", 1, 0, "FPSCounter");
+    qmlRegisterType<Meter>("Conway", 1, 0, "Meter");
 
     QGuiApplication app(argc, argv);
 
@@ -38,28 +38,6 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game);
     QObject::connect(worker, &ConwayWorker::gameUpdated, canvas, &ConwayCanvas::gameUpdated);
     worker->start();
-
-    QElapsedTimer timer;
-    QQuickWindow* window = qobject_cast<QQuickWindow*>(engine.rootObjects().first());
-
-    /*
-    int totalDuration = 0;
-    int loops = 0;
-    timer.start();
-    if (window) {
-        QObject::connect(window, &QQuickWindow::beforeRendering, [&]() {
-            totalDuration += timer.elapsed();
-            ++loops;
-            if (totalDuration > 10 * 1000) {
-                qDebug() << (1000.0 * loops) / totalDuration << "fps";
-                totalDuration = 0;
-                loops = 0;
-            }
-            timer.restart();
-        });
-    }
-    */
-
     
     return app.exec();
 }

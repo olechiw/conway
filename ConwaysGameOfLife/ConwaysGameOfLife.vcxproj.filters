@@ -41,7 +41,7 @@
     <ClCompile Include="ConwayWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FPSCounter.cpp">
+    <ClCompile Include="Meter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,11 +57,14 @@
     <QtMoc Include="ConwayWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="FPSCounter.h">
+    <QtMoc Include="Meter.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="qmldir" />
+    <None Include="StandardLabel.qml">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

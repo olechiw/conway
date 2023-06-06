@@ -4,18 +4,18 @@
 #include <QQuickItem>
 #include <QElapsedTimer>
 
-class FPSCounter : public QQuickItem
+class Meter : public QQuickItem
 {
 	Q_OBJECT
 
 public:
-	explicit FPSCounter(QQuickItem* parent = nullptr);
+	explicit Meter(QQuickItem* parent = nullptr);
 
 public slots:
-	void logFrame();
+	void increment();
 
 signals:
-	void fpsUpdated(double newFPS);
+	void meterUpdated(double newFPS);
 
 private:
 	QElapsedTimer _timer;
