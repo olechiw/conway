@@ -17,6 +17,7 @@ Window {
     }
     Meter {
         id: simulationMeter
+        objectName: "simulationMeter"
     }
 
     Component.onCompleted: {
@@ -45,8 +46,12 @@ Window {
             StandardLabel {
                 Layout.leftMargin: 5
                 Layout.alignment: Qt.AlignRight
-                id: simulationCounterLabel
+                id: simulationMeterLabel
                 Connections {
+                    target: simulationMeter
+                    function onMeterUpdated(value) {
+                        simulationMeterLabel.text = Math.floor(value) + " Steps per Second"
+                    }
                 }
                 text: "Simulations per second"
             }

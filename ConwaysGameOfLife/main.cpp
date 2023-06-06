@@ -9,6 +9,11 @@
 #include "ConwayWorker.h"
 #include "Meter.h"
 
+template<typename T>
+static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
+    return engine.rootObjects().first()->findChild<T>(name);
+}
+
 int main(int argc, char *argv[])
 {
 #if defined(Q_OS_WIN)
@@ -25,8 +30,8 @@ int main(int argc, char *argv[])
     
     if (engine.rootObjects().isEmpty())
         return -1;
-
-    ConwayCanvas* canvas = engine.rootObjects().first()->findChild<ConwayCanvas*>("conwayCanvas");
+    
+    ConwayCanvas* canvas = findChild<ConwayCanvas*>("conwayCanvas", engine);
 
     ConwayGame* game = new ConwayGame();
     game->setAlive(1, 0);
@@ -37,6 +42,8 @@ int main(int argc, char *argv[])
 
     ConwayWorker* worker = new ConwayWorker(game);
     QObject::connect(worker, &ConwayWorker::gameUpdated, canvas, &ConwayCanvas::gameUpdated);
+    Meter* simulationMeter = findChild<Meter*>("simulationMeter", engine);
+    QObject::connect(worker, &ConwayWorker::gameUpdated, simulationMeter, &Meter::increment);
     worker->start();
     
     return app.exec();
