@@ -12,15 +12,6 @@ Window {
     title: qsTr("Conway's Game of Life")
     objectName: "mainWindow"
 
-    Meter {
-        id: fpsMeter
-        objectName: "fpsMeter"
-    }
-    Meter {
-        id: simulationMeter
-        objectName: "simulationMeter"
-    }
-
     GridLayout {
         columns: 2
         anchors.fill: parent
@@ -35,11 +26,10 @@ Window {
                 Layout.alignment: Qt.AlignLeft
                 id: fpsMeterLabel
                 Layout.fillWidth: true
-                Connections {
-                    target: fpsMeter
-                    function onMeterUpdated(value) {
-                        fpsMeterLabel.text = Math.floor(value) + " FPS"
-                    }
+                Meter {
+                    objectName: "fpsMeter"
+                    id: fpsMeter
+                    onMeterUpdated: (value) => fpsMeterLabel.text = Math.floor(value) + " FPS"
                 }
             }
             
@@ -77,13 +67,14 @@ Window {
             StandardLabel {
                 Layout.alignment: Qt.AlignRight
                 id: simulationMeterLabel
-                Connections {
-                    target: simulationMeter
-                    function onMeterUpdated(value) {
-                        simulationMeterLabel.text = Math.floor(value) + " Steps per Second"
+                Meter {
+                    id: simulationMeter
+                    objectName: "simulationMeter"
+                    onMeterUpdated: (value) => {
+                        simulationMeterLabel.text = Math.floor(value) + " Steps per second"
                     }
                 }
-                text: "Simulations per second"
+                text: "0 Steps per second"
             }
             
         }
