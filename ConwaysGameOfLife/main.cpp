@@ -13,6 +13,9 @@
 
 template<typename T>
 static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
+    if (engine.rootObjects().first()->objectName() == name) {
+        return qobject_cast<T>(engine.rootObjects().first());
+    }
     return engine.rootObjects().first()->findChild<T>(name);
 }
 
@@ -56,6 +59,11 @@ int main(int argc, char *argv[])
     // Bind Simulation Meter
     Meter* simulationMeter = findChild<Meter*>("simulationMeter", engine);
     QObject::connect(worker, &ConwayWorker::gameUpdated, simulationMeter, &Meter::increment);
+
+    // Bind FPS Meter
+    QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
+    Meter* fpsMeter = findChild<Meter*>("fpsMeter", engine);
+    QObject::connect(window, &QQuickWindow::beforeRendering, fpsMeter, &Meter::increment);
 
     // Bind config signals to worker
     QObject::connect(appModel, &ApplicationModel::simulationDelayChanged, worker, &ConwayWorker::setDelayMilliseconds);

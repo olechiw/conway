@@ -11,18 +11,14 @@ Window {
     height: 1000
     title: qsTr("Conway's Game of Life")
     objectName: "mainWindow"
-    id: mainWindow
 
     Meter {
         id: fpsMeter
+        objectName: "fpsMeter"
     }
     Meter {
         id: simulationMeter
         objectName: "simulationMeter"
-    }
-
-    Component.onCompleted: {
-        mainWindow.beforeRendering.connect(fpsMeter.increment);
     }
 
     GridLayout {
@@ -55,12 +51,12 @@ Window {
                     id: restartButton
                 }
                 Button {
-                    text: "Pause"
+                    text: "Play"
                     id: pauseButton
                     Layout.alignment: Qt.AlignBottom
                     onClicked: (value) => {
+                        pauseButton.text = (ApplicationModel.paused) ? "Pause" : "Play";
                         ApplicationModel.paused = !ApplicationModel.paused;
-                        pauseButton.text = (pauseButton.text == "Pause") ? "Play" : "Pause";
                     }
                 }
                 ColumnLayout {
