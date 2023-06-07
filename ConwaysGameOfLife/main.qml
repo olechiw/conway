@@ -50,12 +50,18 @@ Window {
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
                 Button {
-                text: "Restart"
-                Layout.alignment: Qt.AlignBottom
+                    text: "Restart"
+                    Layout.alignment: Qt.AlignBottom
+                    id: restartButton
                 }
                 Button {
-                    text: "Pause/Play"
+                    text: "Pause"
+                    id: pauseButton
                     Layout.alignment: Qt.AlignBottom
+                    onClicked: (value) => {
+                        ApplicationModel.paused = !ApplicationModel.paused;
+                        pauseButton.text = (pauseButton.text == "Pause") ? "Play" : "Pause";
+                    }
                 }
                 ColumnLayout {
                     StandardLabel {
@@ -64,7 +70,9 @@ Window {
                     SpinBox {
                         from: 0
                         to: 1000
+                        id: simulationSpinner
                         Layout.alignment: Qt.AlignCenter
+                        onValueModified: () => ApplicationModel.simulationDelay = simulationSpinner.value
                     }
                 }
             }

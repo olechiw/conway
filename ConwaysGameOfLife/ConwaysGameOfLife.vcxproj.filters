@@ -44,6 +44,9 @@
     <ClCompile Include="Meter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ApplicationModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConwayGame.h">
@@ -58,6 +61,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Meter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ApplicationModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

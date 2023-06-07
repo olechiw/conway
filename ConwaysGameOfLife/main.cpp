@@ -9,6 +9,7 @@
 #include "ConwayCanvas.h"
 #include "ConwayWorker.h"
 #include "Meter.h"
+#include "ApplicationModel.h"
 
 template<typename T>
 static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<ConwayCanvas>("Conway", 1, 0, "ConwayCanvas");
     qmlRegisterType<Meter>("Conway", 1, 0, "Meter");
+    ApplicationModel* appModel = new ApplicationModel;
+    qmlRegisterSingletonInstance<ApplicationModel>("Conway", 1, 0, "ApplicationModel", appModel);
 
     QGuiApplication app(argc, argv);
 
@@ -43,11 +46,16 @@ int main(int argc, char *argv[])
     game->setAlive(1, 1);
     game->setAlive(1, 2);
 
-    ConwayWorker* worker = new ConwayWorker(game);
+    QThread* thread = new QThread;
+    ConwayWorker* worker = new ConwayWorker(game, thread);
+    thread->start();
+
     QObject::connect(worker, &ConwayWorker::gameUpdated, canvas, &ConwayCanvas::gameUpdated);
     Meter* simulationMeter = findChild<Meter*>("simulationMeter", engine);
     QObject::connect(worker, &ConwayWorker::gameUpdated, simulationMeter, &Meter::increment);
-    worker->start();
+    QObject::connect(appModel, &ApplicationModel::simulationDelayChanged, worker, &ConwayWorker::setDelayMilliseconds);
+    QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
+
     
     return app.exec();
 }
