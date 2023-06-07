@@ -50,9 +50,14 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game, thread);
     thread->start();
 
-    QObject::connect(worker, &ConwayWorker::gameUpdated, canvas, &ConwayCanvas::gameUpdated);
+    // Bind rendering
+    QObject::connect(worker, &ConwayWorker::renderFrame, canvas, &ConwayCanvas::renderFrame);
+
+    // Bind Simulation Meter
     Meter* simulationMeter = findChild<Meter*>("simulationMeter", engine);
     QObject::connect(worker, &ConwayWorker::gameUpdated, simulationMeter, &Meter::increment);
+
+    // Bind config signals to worker
     QObject::connect(appModel, &ApplicationModel::simulationDelayChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
 

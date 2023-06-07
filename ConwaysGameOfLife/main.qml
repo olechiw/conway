@@ -70,9 +70,10 @@ Window {
                     SpinBox {
                         from: 0
                         to: 1000
+                        value: ApplicationModel.simulationDelayMilliseconds
                         id: simulationSpinner
                         Layout.alignment: Qt.AlignCenter
-                        onValueModified: () => ApplicationModel.simulationDelay = simulationSpinner.value
+                        onValueModified: () => ApplicationModel.simulationDelayMilliseconds = simulationSpinner.value
                     }
                 }
             }

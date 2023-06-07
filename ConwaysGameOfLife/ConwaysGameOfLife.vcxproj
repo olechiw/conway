@@ -95,7 +95,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ApplicationModel.cpp" />
     <ClCompile Include="ConwayGame.cpp" />
     <ClCompile Include="ConwayCanvas.cpp" />
     <ClCompile Include="ConwayWorker.cpp" />
@@ -107,6 +106,7 @@
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Defaults.h" />
     <QtMoc Include="ApplicationModel.h" />
     <ClInclude Include="ConwayGame.h" />
     <QtMoc Include="Meter.h" />

@@ -1,13 +1,13 @@
 #include "ConwayWorker.h"
 
-ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _paused(false)
+ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _paused(DEFAULT_PAUSED_STATE)
 {
 	// TODO: default configurations
 	this->moveToThread(thread);
 	_timer = new QTimer;
 	connect(_timer, SIGNAL(timeout()), this, SLOT(step()));
 	connect(thread, SIGNAL(started()), this, SLOT(startTimer()));
-	_timer->setInterval(0);
+	_timer->setInterval(DEFAULT_SIMULATION_DELAY_MILLISECONDS);
 	_timer->moveToThread(thread);
 }
 
@@ -33,7 +33,9 @@ void ConwayWorker::startTimer()
 
 void ConwayWorker::step()
 {
-	if (_paused) return;
-	_game->step();
-	emit gameUpdated(_game->getState());
+	if (!_paused) {
+		_game->step();
+		emit gameUpdated();
+	}
+	emit renderFrame(_game->getState());
 }
