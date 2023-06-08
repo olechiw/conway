@@ -22,16 +22,23 @@ Window {
             Layout.bottomMargin: 0
             Layout.rightMargin: 3
             Layout.leftMargin: 3
-            StandardLabel {
+            ColumnLayout {
                 Layout.alignment: Qt.AlignLeft
-                id: fpsMeterLabel
-                Layout.fillWidth: true
-                Meter {
-                    objectName: "fpsMeter"
-                    id: fpsMeter
-                    onMeterUpdated: (value) => fpsMeterLabel.text = Math.floor(value) + " FPS"
+                StandardLabel {
+                    text: "Population: " + ApplicationModel.currentPopulation
+                }
+
+                StandardLabel {
+                    Layout.alignment: Qt.AlignLeft
+                    id: fpsMeterLabel
+                    Meter {
+                        objectName: "fpsMeter"
+                        id: fpsMeter
+                        onMeterUpdated: (value) => fpsMeterLabel.text = Math.floor(value) + " FPS"
+                    }
                 }
             }
+
             
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
@@ -41,13 +48,10 @@ Window {
                     id: restartButton
                 }
                 Button {
-                    text: "Play"
+                    text: (ApplicationModel.paused) ? "Play" : "Pause";
                     id: pauseButton
                     Layout.alignment: Qt.AlignBottom
-                    onClicked: (value) => {
-                        pauseButton.text = (ApplicationModel.paused) ? "Pause" : "Play";
-                        ApplicationModel.paused = !ApplicationModel.paused;
-                    }
+                    onClicked: ApplicationModel.paused = !ApplicationModel.paused;
                 }
                 ColumnLayout {
                     StandardLabel {

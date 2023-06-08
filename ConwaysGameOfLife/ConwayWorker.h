@@ -15,8 +15,9 @@ public:
 	ConwayWorker(ConwayGame* game, QThread* thread);
 
 signals:
-	void gameUpdated();
-	void renderFrame(const ConwayGame::State& newState);
+	void gameWasUpdated();
+	void nextGameState(const ConwayGame::State& newState);
+	void currentPopulation(int currentPopulation);
 
 public slots:
 	void step();

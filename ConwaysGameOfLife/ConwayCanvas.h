@@ -16,7 +16,7 @@ public:
     QSGNode* updatePaintNode(QSGNode* node, UpdatePaintNodeData*) override;
 
 public slots:
-    void renderFrame(const ConwayGame::State& state);
+    void nextGameState(const ConwayGame::State& state);
 
 private:
     ConwayGame::State _currentState;

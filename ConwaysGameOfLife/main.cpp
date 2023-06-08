@@ -53,12 +53,12 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game, thread);
     thread->start();
 
-    // Bind rendering
-    QObject::connect(worker, &ConwayWorker::renderFrame, canvas, &ConwayCanvas::renderFrame);
+    // Bind rendering - order matters this should have priority
+    QObject::connect(worker, &ConwayWorker::nextGameState, canvas, &ConwayCanvas::nextGameState);
 
     // Bind Simulation Meter
     Meter* simulationMeter = findChild<Meter*>("simulationMeter", engine);
-    QObject::connect(worker, &ConwayWorker::gameUpdated, simulationMeter, &Meter::increment);
+    QObject::connect(worker, &ConwayWorker::gameWasUpdated, simulationMeter, &Meter::increment);
 
     // Bind FPS Meter
     QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
@@ -68,6 +68,8 @@ int main(int argc, char *argv[])
     // Bind config signals to worker
     QObject::connect(appModel, &ApplicationModel::simulationDelayChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
+    
+    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
 
     
     return app.exec();

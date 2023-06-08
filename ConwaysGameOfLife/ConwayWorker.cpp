@@ -35,7 +35,8 @@ void ConwayWorker::step()
 {
 	if (!_paused) {
 		_game->step();
-		emit gameUpdated();
+		emit gameWasUpdated();
 	}
-	emit renderFrame(_game->getState());
+	emit nextGameState(_game->getState());
+	emit currentPopulation(_game->getState().board.size());
 }
