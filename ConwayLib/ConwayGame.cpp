@@ -23,7 +23,7 @@ void ConwayGame::step()
 	_workingCells.clear();
 	for (auto& [cellPosition, value] : _adjacentCells) {
 		if (value == 3 || (value == 2 && _latestState.board[cellPosition]))
-			_workingCells[{cellPosition.x, cellPosition.y}] = true;
+			_workingCells.insert({ {cellPosition.x, cellPosition.y}, true });
 	}
 	_adjacentCells.clear();
 	for (auto& [cellPosition, alive] : _workingCells) {

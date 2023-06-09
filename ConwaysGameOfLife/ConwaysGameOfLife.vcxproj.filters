@@ -32,9 +32,6 @@
     <None Include="main.qml">
       <Filter>Source Files</Filter>
     </None>
-    <ClCompile Include="ConwayGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConwayCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,9 +43,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConwayGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Defaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>

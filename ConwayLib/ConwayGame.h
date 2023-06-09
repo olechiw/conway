@@ -3,9 +3,7 @@
 #include <cassert>
 #include <unordered_map>
 
-#include <QMutex>
-
-#include "Defaults.h"
+static constexpr int DEFAULT_CONWAY_SIZE = 5;
 
 class ConwayGame
 {
@@ -24,7 +22,7 @@ public:
 	using Board = std::unordered_map<CellPosition, bool, CellPositionHash>;
 	struct State {
 		Board board;
-		long size = DEFAULT_SIZE;
+		long size = DEFAULT_CONWAY_SIZE;
 	};
 
 	ConwayGame();

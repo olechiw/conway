@@ -5,21 +5,44 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConwaysGameOfLife", "ConwaysGameOfLife\ConwaysGameOfLife.vcxproj", "{190960AA-9DA8-4828-9157-A2F9CEF4B537}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarking", "Benchmarking\Benchmarking.vcxproj", "{CA31F7CA-0D6C-40DF-95E6-FC782D560108}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConwayLib", "ConwayLib\ConwayLib.vcxitems", "{D4C9386E-4723-4A13-BDFB-804415CAED3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Debug|x64.ActiveCfg = Debug|x64
 		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Debug|x64.Build.0 = Debug|x64
+		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Debug|x86.ActiveCfg = Debug|x64
+		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Debug|x86.Build.0 = Debug|x64
 		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Release|x64.ActiveCfg = Release|x64
 		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Release|x64.Build.0 = Release|x64
+		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Release|x86.ActiveCfg = Release|x64
+		{190960AA-9DA8-4828-9157-A2F9CEF4B537}.Release|x86.Build.0 = Release|x64
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Debug|x64.ActiveCfg = Debug|x64
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Debug|x64.Build.0 = Debug|x64
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Debug|x86.ActiveCfg = Debug|Win32
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Debug|x86.Build.0 = Debug|Win32
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x64.ActiveCfg = Release|x64
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x64.Build.0 = Release|x64
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x86.ActiveCfg = Release|Win32
+		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {586F680C-3046-4164-8681-A2C8CFE569E2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ConwayLib\ConwayLib.vcxitems*{190960aa-9da8-4828-9157-a2f9cef4b537}*SharedItemsImports = 4
+		ConwayLib\ConwayLib.vcxitems*{ca31f7ca-0d6c-40df-95e6-fc782d560108}*SharedItemsImports = 4
+		ConwayLib\ConwayLib.vcxitems*{d4c9386e-4723-4a13-bdfb-804415caed3d}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
