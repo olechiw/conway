@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
     ConwayCanvas* canvas = findChild<ConwayCanvas*>("conwayCanvas", engine);
 
     ConwayGame* game = new ConwayGame();
-    game->setAlive(1, 0);
-    game->setAlive(2, 0);
+    game->setAlive(0, -1);
+    game->setAlive(1, -1);
+    game->setAlive(-1, 0);
+    game->setAlive(0, 0);
     game->setAlive(0, 1);
-    game->setAlive(1, 1);
-    game->setAlive(1, 2);
 
     QThread* thread = new QThread;
     ConwayWorker* worker = new ConwayWorker(game, thread);
@@ -67,11 +67,14 @@ int main(int argc, char *argv[])
     QObject::connect(window, &QQuickWindow::beforeRendering, fpsMeter, &Meter::increment);
     QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
 
+    // Bind population tracker
+    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
+
+
     // Bind config signals to worker
     QObject::connect(appModel, &ApplicationModel::simulationDelayMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
     
-    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
 
     
     return app.exec();

@@ -56,6 +56,7 @@ Window {
                     SpinBox {
                         from: 0
                         to: 1000
+                        editable: true
                         value: ApplicationModel.simulationDelayMs
                         id: simulationSpinner
                         Layout.alignment: Qt.AlignCenter

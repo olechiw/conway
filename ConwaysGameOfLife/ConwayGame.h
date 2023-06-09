@@ -5,6 +5,8 @@
 
 #include <QMutex>
 
+#include "Defaults.h"
+
 class ConwayGame
 {
 public:
@@ -22,7 +24,7 @@ public:
 	using Board = std::unordered_map<CellPosition, bool, CellPositionHash>;
 	struct State {
 		Board board;
-		long size{};
+		long size = DEFAULT_SIZE;
 	};
 
 	ConwayGame();

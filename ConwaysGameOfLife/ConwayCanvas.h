@@ -3,6 +3,9 @@
 #include <QColor>
 #include <QSGSimpleRectNode>
 
+#include <memory>
+#include <memory_resource>
+
 #include "ConwayGame.h"
 
 class ConwayCanvas :

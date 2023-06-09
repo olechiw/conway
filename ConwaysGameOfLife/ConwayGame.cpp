@@ -6,7 +6,6 @@ static const std::vector<std::pair<int, int>> adjacentDirections = {
 
 ConwayGame::ConwayGame()
 {
-	_latestState.size = 100;
 }
 
 void ConwayGame::setAlive(long x, long y, bool alive)

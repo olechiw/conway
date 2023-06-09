@@ -6,9 +6,6 @@ ConwayCanvas::ConwayCanvas(QQuickItem* parent)
     _currentState.size = 0;
 }
 
-// connect this item to the data model
-// call update() which will then call the paint (in a different thread)
-
 QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 {
     QSGSimpleRectNode* n = static_cast<QSGSimpleRectNode*>(node);
@@ -20,7 +17,11 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     }
 
     if (_currentState.size > 0) {
-        n->removeAllChildNodes();
+        while (n->childCount() != 0) {
+            QSGSimpleRectNode *toDelete = static_cast<QSGSimpleRectNode*>(n->firstChild());
+            n->removeChildNode(toDelete);
+            delete toDelete;
+        }
 
         const long gameSize = _currentState.size;
         const auto rectangleWidth = this->width() / (gameSize * 2);
@@ -29,7 +30,9 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
         const auto yOffset = (this->height() / 2) - (rectangleHeight / 2);
 
         for (const auto& [cellPosition, _] : _currentState.board) {
-            QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode();
+            QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
+            rectToRender = new(rectToRender) QSGSimpleRectNode;
+            rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
             rectToRender->setColor(Qt::green);
             rectToRender->setRect(
                 cellPosition.x * rectangleWidth + xOffset,
