@@ -31,11 +31,7 @@ Window {
                 StandardLabel {
                     Layout.alignment: Qt.AlignLeft
                     id: fpsMeterLabel
-                    Meter {
-                        objectName: "fpsMeter"
-                        id: fpsMeter
-                        onMeterUpdated: (value) => fpsMeterLabel.text = Math.floor(value) + " FPS"
-                    }
+                    text: Math.floor(ApplicationModel.currentFps) + " FPS"
                 }
             }
 
@@ -60,10 +56,10 @@ Window {
                     SpinBox {
                         from: 0
                         to: 1000
-                        value: ApplicationModel.simulationDelayMilliseconds
+                        value: ApplicationModel.simulationDelayMs
                         id: simulationSpinner
                         Layout.alignment: Qt.AlignCenter
-                        onValueModified: () => ApplicationModel.simulationDelayMilliseconds = simulationSpinner.value
+                        onValueModified: () => ApplicationModel.simulationDelayMs = simulationSpinner.value
                     }
                 }
             }
@@ -71,14 +67,7 @@ Window {
             StandardLabel {
                 Layout.alignment: Qt.AlignRight
                 id: simulationMeterLabel
-                Meter {
-                    id: simulationMeter
-                    objectName: "simulationMeter"
-                    onMeterUpdated: (value) => {
-                        simulationMeterLabel.text = Math.floor(value) + " Steps per second"
-                    }
-                }
-                text: "0 Steps per second"
+                text: Math.floor(ApplicationModel.currentSimulationsPerSecond) + " Steps per second"
             }
             
         }
