@@ -12,29 +12,38 @@ using std::chrono::microseconds;
 using std::cout;
 using std::endl;
 
+// Current time; 56 micros
+
 int main() {
-    std::vector<std::pair<long, long>> board = {
+    std::vector<std::pair<std::string, std::vector<std::pair<long, long>>>> boards =
+    { 
+        { "R-board", {
             { 0, -1 },
             { 1, -1 },
             { -1, 0},
             { 0, 0 },
-            { 0, 1 }
+            { 0, 1 }} 
+        }
     };
 
-    ConwayGame game;
-    for (const auto& [x, y] : board) {
-        game.setAlive(x, y);
-    }
+    constexpr size_t ITER = 30000;
 
-    constexpr size_t ITER = 3000;
-    const auto start = high_resolution_clock::now();
-    for (size_t i = 0; i < ITER; ++i) {
-        game.step();
-        if (i % 1000 == 0)
-            cout << i << " ";
-    }
-    const auto stop = high_resolution_clock::now();
+    for (const auto& [name, board] : boards) {
+        ConwayGame game;
+        for (const auto& [x, y] : board)
+            game.setAlive(x, y);
 
-    cout << "Duration: " << duration_cast<microseconds>(stop - start) << endl
-        << "Average Step Time: " << duration_cast<microseconds>(stop - start) / ITER << endl;
+        const auto start = high_resolution_clock::now();
+        for (size_t i = 0; i < ITER; ++i) {
+            game.step();
+            if (i % 1000 == 0)
+                cout << i << " ";
+        }
+        const auto stop = high_resolution_clock::now();
+
+        cout << endl
+            << "----" << name << "----" << endl
+            << "Duration: " << duration_cast<microseconds>(stop - start) << endl
+            << "Average Step Time: " << duration_cast<microseconds>(stop - start) / ITER << endl;
+    }
 }

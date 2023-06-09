@@ -31,6 +31,7 @@ public:
 	const State& getState() const;
 private:
 	void updateSize(const ConwayGame::CellPosition& cellPosition);
+	void updateWorkingCellsFromAdjacency();
 	Board _workingCells;
 	State _latestState;
 	std::unordered_map<CellPosition, uint8_t, CellPositionHash> _adjacentCells;

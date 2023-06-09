@@ -20,11 +20,8 @@ void ConwayGame::setAlive(long x, long y, bool alive)
 
 void ConwayGame::step()
 {
-	_workingCells.clear();
-	for (auto& [cellPosition, value] : _adjacentCells) {
-		if (value == 3 || (value == 2 && _latestState.board[cellPosition]))
-			_workingCells.insert({ {cellPosition.x, cellPosition.y}, true });
-	}
+	updateWorkingCellsFromAdjacency();
+
 	_adjacentCells.clear();
 	for (auto& [cellPosition, alive] : _workingCells) {
 		updateSize(cellPosition);
@@ -39,6 +36,15 @@ void ConwayGame::step()
 void ConwayGame::updateSize(const ConwayGame::CellPosition& cellPosition) {
 	_latestState.size = std::max(abs(cellPosition.x), _latestState.size);
 	_latestState.size = std::max(abs(cellPosition.y), _latestState.size);
+}
+
+void ConwayGame::updateWorkingCellsFromAdjacency()
+{
+	_workingCells.clear();
+	for (auto& [cellPosition, value] : _adjacentCells) {
+		if (value == 3 || (value == 2 && _latestState.board[cellPosition]))
+			_workingCells.insert({ {cellPosition.x, cellPosition.y}, true });
+	}
 }
 
 const ConwayGame::State &ConwayGame::getState() const {
