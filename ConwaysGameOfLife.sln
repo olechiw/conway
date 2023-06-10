@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConwaysGameOfLife", "Conway
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarking", "Benchmarking\Benchmarking.vcxproj", "{CA31F7CA-0D6C-40DF-95E6-FC782D560108}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConwayLib", "ConwayLib\ConwayLib.vcxitems", "{D4C9386E-4723-4A13-BDFB-804415CAED3D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StaticConwayLib", "StaticConwayLib\StaticConwayLib.vcxproj", "{F450B33C-3C82-4741-AB59-727A468EAE3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,16 +33,19 @@ Global
 		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x64.Build.0 = Release|x64
 		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x86.ActiveCfg = Release|Win32
 		{CA31F7CA-0D6C-40DF-95E6-FC782D560108}.Release|x86.Build.0 = Release|Win32
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Debug|x64.ActiveCfg = Debug|x64
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Debug|x64.Build.0 = Debug|x64
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Debug|x86.ActiveCfg = Debug|Win32
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Debug|x86.Build.0 = Debug|Win32
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Release|x64.ActiveCfg = Release|x64
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Release|x64.Build.0 = Release|x64
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Release|x86.ActiveCfg = Release|Win32
+		{F450B33C-3C82-4741-AB59-727A468EAE3F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {586F680C-3046-4164-8681-A2C8CFE569E2}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ConwayLib\ConwayLib.vcxitems*{190960aa-9da8-4828-9157-a2f9cef4b537}*SharedItemsImports = 4
-		ConwayLib\ConwayLib.vcxitems*{ca31f7ca-0d6c-40df-95e6-fc782d560108}*SharedItemsImports = 4
-		ConwayLib\ConwayLib.vcxitems*{d4c9386e-4723-4a13-bdfb-804415caed3d}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal

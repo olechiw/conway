@@ -1,4 +1,5 @@
 #include "ConwayGame.h"
+#include "pch.h"
 
 static const std::vector<std::pair<int, int>> adjacentDirections = {
 	{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {-1, -1}, {1, -1}, {-1, 1}

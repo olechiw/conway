@@ -3,6 +3,8 @@
 #include <cassert>
 #include <unordered_map>
 
+#include <absl/container/flat_hash_map.h>
+
 static constexpr int DEFAULT_CONWAY_SIZE = 5;
 
 class ConwayGame
@@ -14,12 +16,17 @@ public:
 		bool operator==(const CellPosition& right) const {
 			return x == right.x && y == right.y;
 		}
+
+		template <typename H>
+		friend H AbslHashValue(H h, const ConwayGame::CellPosition& cellPosition) {
+			return H::combine(std::move(h), cellPosition.x, cellPosition.y);
+		}
 	};
 	struct CellPositionHash {
 		size_t operator()(const CellPosition& cell) const;
 	};
 
-	using Board = std::unordered_map<CellPosition, bool, CellPositionHash>;
+	using Board = absl::flat_hash_map<CellPosition, bool>;
 	struct State {
 		Board board;
 		long size = DEFAULT_CONWAY_SIZE;
@@ -34,6 +41,5 @@ private:
 	void updateWorkingCellsFromAdjacency();
 	Board _workingCells;
 	State _latestState;
-	std::unordered_map<CellPosition, uint8_t, CellPositionHash> _adjacentCells;
+	absl::flat_hash_map<CellPosition, uint8_t> _adjacentCells;
 };
-

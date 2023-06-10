@@ -12,8 +12,6 @@ using std::chrono::microseconds;
 using std::cout;
 using std::endl;
 
-// Current time; 56 micros
-
 int main() {
     std::vector<std::pair<std::string, std::vector<std::pair<long, long>>>> boards =
     { 
