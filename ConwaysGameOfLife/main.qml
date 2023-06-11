@@ -29,9 +29,11 @@ Window {
                 }
 
                 StandardLabel {
-                    Layout.alignment: Qt.AlignLeft
-                    id: fpsMeterLabel
                     text: Math.floor(ApplicationModel.currentFps) + " FPS"
+                }
+
+                StandardLabel {
+                    text: ApplicationModel.generations + " Generations"
                 }
             }
 
@@ -51,16 +53,16 @@ Window {
                 }
                 ColumnLayout {
                     StandardLabel {
-                        text: "Minimum Simulation Time (ms)"
+                        text: "Minimum Generation Time (ms)"
                     }
                     SpinBox {
                         from: 0
                         to: 1000
                         editable: true
-                        value: ApplicationModel.simulationDelayMs
+                        value: ApplicationModel.generationDurMs
                         id: simulationSpinner
                         Layout.alignment: Qt.AlignCenter
-                        onValueModified: () => ApplicationModel.simulationDelayMs = simulationSpinner.value
+                        onValueModified: () => ApplicationModel.generationDurMs = simulationSpinner.value
                     }
                 }
             }
@@ -68,7 +70,7 @@ Window {
             StandardLabel {
                 Layout.alignment: Qt.AlignRight
                 id: simulationMeterLabel
-                text: Math.floor(ApplicationModel.currentSimulationsPerSecond) + " Steps per second"
+                text: Math.floor(ApplicationModel.generationsPerSecond) + " Generations per second"
             }
             
         }

@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // Bind Simulation Meter
     Meter* simulationMeter = new Meter;
     QObject::connect(worker, &ConwayWorker::gameWasUpdated, simulationMeter, &Meter::increment);
-    QObject::connect(simulationMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentSimulationsPerSecond);
+    QObject::connect(simulationMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setGenerationsPerSecond);
 
     // Bind FPS Meter
     QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
@@ -68,11 +68,13 @@ int main(int argc, char *argv[])
     QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
 
     // Bind population tracker
-    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
-
+    // QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
+    // Bind generations tracker
+    // QObject::connect(worker, &ConwayWorker::incrementGenerations, appModel, &ApplicationModel::incrementGenerations);
+    // QObject::connect(worker, &ConwayWorker::resetGenerations, appModel, &ApplicationModel::resetGenerations);
 
     // Bind config signals to worker
-    QObject::connect(appModel, &ApplicationModel::simulationDelayMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
+    QObject::connect(appModel, &ApplicationModel::generationDurMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
     
 

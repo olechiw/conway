@@ -7,7 +7,7 @@ ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _pau
 	_timer = new QTimer;
 	connect(_timer, SIGNAL(timeout()), this, SLOT(step()));
 	connect(thread, SIGNAL(started()), this, SLOT(startTimer()));
-	_timer->setInterval(DEFAULT_SIMULATION_DELAY_MILLISECONDS);
+	_timer->setInterval(DEFAULT_GENERATION_DURATION_MILLISECONDS);
 	_timer->moveToThread(thread);
 }
 
@@ -23,7 +23,7 @@ void ConwayWorker::setPaused(bool paused)
 
 void ConwayWorker::reset()
 {
-	// TODO: default configurations
+	emit resetGenerations();
 }
 
 void ConwayWorker::startTimer()
@@ -36,6 +36,7 @@ void ConwayWorker::step()
 	if (!_paused) {
 		_game->step();
 		emit gameWasUpdated();
+		emit incrementGenerations();
 	}
 	emit nextGameState(_game->getState());
 	emit currentPopulation(_game->getState().board.size());

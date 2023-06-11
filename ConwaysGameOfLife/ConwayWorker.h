@@ -18,6 +18,8 @@ signals:
 	void gameWasUpdated();
 	void nextGameState(const ConwayGame::State& newState);
 	void currentPopulation(int currentPopulation);
+	void incrementGenerations();
+	void resetGenerations();
 
 public slots:
 	void step();
@@ -25,6 +27,7 @@ public slots:
 	void setPaused(bool paused);
 	void reset();
 	void startTimer();
+
 
 private:
 	ConwayGame* _game;

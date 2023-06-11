@@ -34,8 +34,6 @@ int main() {
         const auto start = high_resolution_clock::now();
         for (size_t i = 0; i < ITER; ++i) {
             game.step();
-            if (i % 1000 == 0)
-                cout << i << " ";
         }
         const auto stop = high_resolution_clock::now();
 
