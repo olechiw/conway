@@ -17,8 +17,8 @@ ConwayWorker::ConwayWorker(const ConwayGame &game,
 	connect(appModel, &ApplicationModel::restart, this, &ConwayWorker::reset);
 
 	// Bind output signals to model
-	connect(this, &ConwayWorker::setPopulation, appModel, &ApplicationModel::setCurrentPopulation);
-	connect(this, &ConwayWorker::setGenerations, appModel, &ApplicationModel::setGenerations);
+	connect(this, &ConwayWorker::populationChanged, appModel, &ApplicationModel::setCurrentPopulation);
+	connect(this, &ConwayWorker::generationChanged, appModel, &ApplicationModel::setGeneration);
 
 	emitUpdatedState();
 }
@@ -45,6 +45,15 @@ void ConwayWorker::startTimer()
 	_timer->start();
 }
 
+void ConwayWorker::setGame(const ConwayGame& game, bool setNewInitialGame)
+{
+	_game = game;
+	if (setNewInitialGame) {
+		_initialGame = game;
+	}
+	emitUpdatedState();
+}
+
 void ConwayWorker::advanceOneGeneration()
 {
 	_game.step();
@@ -53,7 +62,7 @@ void ConwayWorker::advanceOneGeneration()
 
 void ConwayWorker::emitUpdatedState()
 {
-	emit setGenerations(_game.getState().generations);
-	emit setPopulation(_game.getState().board.size());
-	emit setGameState(_game.getState());
+	emit generationChanged(_game.getState().generations);
+	emit populationChanged(_game.getState().board.size());
+	emit gameStateChanged(_game.getState());
 }

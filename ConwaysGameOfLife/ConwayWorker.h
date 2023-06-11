@@ -12,14 +12,14 @@ class ConwayWorker : public QObject
 	Q_OBJECT
 
 public:
-	ConwayWorker(const ConwayGame& game, ApplicationModel *appModel, QThread* thread);
+	ConwayWorker(const ConwayGame& initialGame, ApplicationModel *appModel, QThread* thread);
 private:
 	void emitUpdatedState();
 
 signals:
-	void setGameState(const ConwayGame::State& newState);
-	void setPopulation(size_t population);
-	void setGenerations(int generations);
+	void gameStateChanged(const ConwayGame::State& newState);
+	void populationChanged(size_t population);
+	void generationChanged(int generations);
 
 public slots:
 	void advanceOneGeneration();
@@ -27,6 +27,7 @@ public slots:
 	void setPaused(bool paused);
 	void reset();
 	void startTimer();
+	void setGame(const ConwayGame& game, bool setNewInitialGame = true);
 
 
 private:

@@ -11,7 +11,7 @@ void Meter::increment() {
     _timer.restart();
 }
 
-Meter::Meter(QQuickItem* parent)
+Meter::Meter()
 {
     _timer.start();
 }

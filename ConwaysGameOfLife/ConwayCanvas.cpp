@@ -3,7 +3,9 @@
 ConwayCanvas::ConwayCanvas(QQuickItem* parent)
 {
     setFlag(Flag::ItemHasContents);
-    _currentState.size = 0;
+    connect(&_renderTimer, &QTimer::timeout, this, &ConwayCanvas::update);
+    _renderTimer.setInterval(FRAME_TIME_MS);
+    _renderTimer.start();
 }
 
 static void drawGridLines(QSGSimpleRectNode* parent, long gameSize, double cellWidth, double cellHeight) {
@@ -74,7 +76,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     return n;
 }
 
-void ConwayCanvas::setGameState(const ConwayGame::State& state)
+void ConwayCanvas::gameStateChanged(const ConwayGame::State& state)
 {
     _currentState = state;
 }

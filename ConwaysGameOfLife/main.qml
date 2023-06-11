@@ -75,7 +75,7 @@ Window {
             StandardLabel {
                 Layout.alignment: Qt.AlignRight
 
-                text: ApplicationModel.generations + " Generations"
+                text: ApplicationModel.generation + " Generations"
             }
             StandardLabel {
                 Layout.alignment: Qt.AlignRight

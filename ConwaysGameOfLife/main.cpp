@@ -31,14 +31,9 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance<ApplicationModel>("Conway", 1, 0, "ApplicationModel", appModel);
 
     QGuiApplication app(argc, argv);
-
     QQuickStyle::setStyle("Basic");
-
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    
-    if (engine.rootObjects().isEmpty())
-        return -1;
     
     ConwayCanvas* canvas = findChild<ConwayCanvas*>("conwayCanvas", engine);
     QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
@@ -54,27 +49,13 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
     thread->start();
 
-    // Bind rendering - order matters this should have priority
-    QObject::connect(worker, &ConwayWorker::setGameState, canvas, &ConwayCanvas::setGameState);
+    // Bind game state updates
+    QObject::connect(worker, &ConwayWorker::gameStateChanged, canvas, &ConwayCanvas::gameStateChanged);
     worker->reset();
 
-    // Maybe move the meters to the worker?
-    // Bind Simulation Meter
-    Meter* simulationMeter = new Meter;
-    QObject::connect(worker, &ConwayWorker::setGameState, simulationMeter, &Meter::increment);
-    QObject::connect(simulationMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setGenerationsPerSecond);
-
-    // Bind FPS Meter
-    Meter* fpsMeter = new Meter;
-    QObject::connect(window, &QQuickWindow::beforeRendering, fpsMeter, &Meter::increment);
-    QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
-
-    // We currently only update the canvas from the worker, this will update regularly anyway i.e. to draw gridlines
-    QTimer* minimumFramerateTimer = new QTimer;
-    constexpr int REFRESH_RATE_MS = 8;
-    QObject::connect(minimumFramerateTimer, &QTimer::timeout, canvas, &ConwayCanvas::update);
-    minimumFramerateTimer->setInterval(REFRESH_RATE_MS);
-    minimumFramerateTimer->start();
+    // Bind Meters
+    QObject::connect(worker, &ConwayWorker::gameStateChanged, &appModel->generationsPerSecondMeter, &Meter::increment);
+    QObject::connect(window, &QQuickWindow::beforeRendering, &appModel->currentFpsMeter, &Meter::increment);
     
     return app.exec();
 }

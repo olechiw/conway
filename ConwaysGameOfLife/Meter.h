@@ -1,15 +1,14 @@
 #pragma once
 
 #include <QObject>
-#include <QQuickItem>
 #include <QElapsedTimer>
 
-class Meter : public QQuickItem
+class Meter : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit Meter(QQuickItem* parent = nullptr);
+	Meter();
 
 public slots:
 	void increment();
