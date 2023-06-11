@@ -7,6 +7,7 @@ class Meter : public QObject
 {
 	Q_OBJECT
 
+	static constexpr int UPDATE_TIME_MS = 100;
 public:
 	Meter();
 

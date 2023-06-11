@@ -3,7 +3,7 @@
 void Meter::increment() {
     _totalDuration += _timer.elapsed();
     ++_frameCount;
-    if (_totalDuration > 250) {
+    if (_totalDuration > UPDATE_TIME_MS) {
         emit meterUpdated((1000.0 * _frameCount) / _totalDuration);
         _totalDuration = 0;
         _frameCount = 0;
