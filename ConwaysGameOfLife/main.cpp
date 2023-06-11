@@ -54,11 +54,11 @@ int main(int argc, char *argv[])
     thread->start();
 
     // Bind rendering - order matters this should have priority
-    QObject::connect(worker, &ConwayWorker::nextGameState, canvas, &ConwayCanvas::nextGameState);
+    QObject::connect(worker, &ConwayWorker::setGameState, canvas, &ConwayCanvas::setGameState);
 
     // Bind Simulation Meter
     Meter* simulationMeter = new Meter;
-    QObject::connect(worker, &ConwayWorker::gameWasUpdated, simulationMeter, &Meter::increment);
+    QObject::connect(worker, &ConwayWorker::setGameState, simulationMeter, &Meter::increment);
     QObject::connect(simulationMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setGenerationsPerSecond);
 
     // Bind FPS Meter
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
 
     // Bind population tracker
-    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
+    QObject::connect(worker, &ConwayWorker::setPopulation, appModel, &ApplicationModel::setCurrentPopulation);
     // Bind generations tracker
     QObject::connect(worker, &ConwayWorker::setGenerations, appModel, &ApplicationModel::setGenerations);
 

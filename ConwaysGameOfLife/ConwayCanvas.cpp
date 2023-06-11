@@ -74,7 +74,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     return n;
 }
 
-void ConwayCanvas::nextGameState(const ConwayGame::State& state)
+void ConwayCanvas::setGameState(const ConwayGame::State& state)
 {
     _currentState = state;
 }

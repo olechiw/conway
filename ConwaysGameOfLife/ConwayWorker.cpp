@@ -6,7 +6,6 @@ ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _gen
 	this->moveToThread(thread);
 	_timer = new QTimer;
 	connect(_timer, SIGNAL(timeout()), this, SLOT(advanceOneGeneration()));
-	// connect(thread, SIGNAL(started()), this, SLOT(startTimer()));
 	_timer->setInterval(DEFAULT_GENERATION_DURATION_MILLISECONDS);
 	_timer->moveToThread(thread);
 }
@@ -35,8 +34,7 @@ void ConwayWorker::startTimer()
 void ConwayWorker::advanceOneGeneration()
 {
 	_game->step();
-	emit gameWasUpdated();
 	emit setGenerations(++_generations);
-	emit currentPopulation(_game->getState().board.size());
-	emit nextGameState(_game->getState());
+	emit setPopulation(_game->getState().board.size());
+	emit setGameState(_game->getState());
 }
