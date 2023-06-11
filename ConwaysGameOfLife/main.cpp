@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 
     // We currently only update the canvas from the worker, this will update regularly anyway i.e. to draw gridlines
     QTimer* minimumFramerateTimer = new QTimer;
-    constexpr int REFRESH_RATE_MS = 16;
+    constexpr int REFRESH_RATE_MS = 8;
     QObject::connect(minimumFramerateTimer, &QTimer::timeout, canvas, &ConwayCanvas::update);
     minimumFramerateTimer->setInterval(REFRESH_RATE_MS);
     minimumFramerateTimer->start();

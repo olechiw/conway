@@ -21,17 +21,15 @@ signals:
 	void setGenerations(int generations);
 
 public slots:
-	void step(bool advanceWhilePaused = false);
+	void advanceOneGeneration();
 	void setDelayMilliseconds(int delay);
 	void setPaused(bool paused);
 	void reset();
 	void startTimer();
-	void advanceOneGeneration();
 
 
 private:
 	ConwayGame* _game;
 	QTimer* _timer;
-	bool _paused;
 	uint64_t _generations;
 };

@@ -77,5 +77,4 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 void ConwayCanvas::nextGameState(const ConwayGame::State& state)
 {
     _currentState = state;
-    emit update();
 }

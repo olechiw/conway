@@ -1,12 +1,12 @@
 #include "ConwayWorker.h"
 
-ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _paused(DEFAULT_PAUSED_STATE), _generations(0)
+ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _generations(0)
 {
 	// TODO: default configurations
 	this->moveToThread(thread);
 	_timer = new QTimer;
-	connect(_timer, SIGNAL(timeout()), this, SLOT(step()));
-	connect(thread, SIGNAL(started()), this, SLOT(startTimer()));
+	connect(_timer, SIGNAL(timeout()), this, SLOT(advanceOneGeneration()));
+	// connect(thread, SIGNAL(started()), this, SLOT(startTimer()));
 	_timer->setInterval(DEFAULT_GENERATION_DURATION_MILLISECONDS);
 	_timer->moveToThread(thread);
 }
@@ -18,7 +18,8 @@ void ConwayWorker::setDelayMilliseconds(int delay)
 
 void ConwayWorker::setPaused(bool paused)
 {
-	_paused = paused;
+	if (paused) _timer->stop();
+	else _timer->start();
 }
 
 void ConwayWorker::reset()
@@ -33,16 +34,9 @@ void ConwayWorker::startTimer()
 
 void ConwayWorker::advanceOneGeneration()
 {
-	step(true);
-}
-
-void ConwayWorker::step(bool advanceWhilePaused)
-{
-	if (!_paused || advanceWhilePaused) {
-		_game->step();
-		emit gameWasUpdated();
-		emit setGenerations(++_generations);
-	}
-	emit nextGameState(_game->getState());
+	_game->step();
+	emit gameWasUpdated();
+	emit setGenerations(++_generations);
 	emit currentPopulation(_game->getState().board.size());
+	emit nextGameState(_game->getState());
 }
