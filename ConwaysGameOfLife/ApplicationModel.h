@@ -31,6 +31,6 @@ class ApplicationModel : public QObject
 	Q_SIMPLE_BOUND_PROPERTY(ApplicationModel, double, currentFps, CurrentFps, 0.0)
 	Q_SIMPLE_BOUND_PROPERTY(ApplicationModel, double, generationsPerSecond, GenerationsPerSecond, 0.0)
 	Q_SIMPLE_BOUND_PROPERTY(ApplicationModel, uint64_t, generations, Generations, 0)
-	Q_SLOT void incrementGenerations() { setGenerations(getGenerations() + 1); }
-	Q_SLOT void resetGenerations() { setGenerations(0); }
+
+	Q_SIGNAL void advanceOneGeneration();
 };

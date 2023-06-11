@@ -12,9 +12,9 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     if (!n) {
         n = new QSGSimpleRectNode();
         n->setColor(Qt::black);
-        QRectF rect = boundingRect();
-        n->setRect(rect);
     }
+    QRectF rect = boundingRect();
+    n->setRect(rect);
 
     if (_currentState.size > 0) {
         while (n->childCount() != 0) {
@@ -23,7 +23,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             delete toDelete;
         }
 
-        const long gameSize = _currentState.size;
+        const long gameSize = _currentState.size + 1;
         const auto rectangleWidth = this->width() / (gameSize * 2);
         const auto rectangleHeight = this->height() / (gameSize * 2);
         const auto xOffset = (this->width() / 2) - (rectangleWidth / 2);

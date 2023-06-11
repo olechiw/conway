@@ -1,6 +1,6 @@
 #include "ConwayWorker.h"
 
-ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _paused(DEFAULT_PAUSED_STATE)
+ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _paused(DEFAULT_PAUSED_STATE), _generations(0)
 {
 	// TODO: default configurations
 	this->moveToThread(thread);
@@ -23,7 +23,7 @@ void ConwayWorker::setPaused(bool paused)
 
 void ConwayWorker::reset()
 {
-	emit resetGenerations();
+	emit setGenerations(0);
 }
 
 void ConwayWorker::startTimer()
@@ -31,12 +31,17 @@ void ConwayWorker::startTimer()
 	_timer->start();
 }
 
-void ConwayWorker::step()
+void ConwayWorker::advanceOneGeneration()
 {
-	if (!_paused) {
+	step(true);
+}
+
+void ConwayWorker::step(bool advanceWhilePaused)
+{
+	if (!_paused || advanceWhilePaused) {
 		_game->step();
 		emit gameWasUpdated();
-		emit incrementGenerations();
+		emit setGenerations(++_generations);
 	}
 	emit nextGameState(_game->getState());
 	emit currentPopulation(_game->getState().board.size());

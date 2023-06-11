@@ -68,14 +68,14 @@ int main(int argc, char *argv[])
     QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
 
     // Bind population tracker
-    // QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
+    QObject::connect(worker, &ConwayWorker::currentPopulation, appModel, &ApplicationModel::setCurrentPopulation);
     // Bind generations tracker
-    // QObject::connect(worker, &ConwayWorker::incrementGenerations, appModel, &ApplicationModel::incrementGenerations);
-    // QObject::connect(worker, &ConwayWorker::resetGenerations, appModel, &ApplicationModel::resetGenerations);
+    QObject::connect(worker, &ConwayWorker::setGenerations, appModel, &ApplicationModel::setGenerations);
 
     // Bind config signals to worker
     QObject::connect(appModel, &ApplicationModel::generationDurMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
+    QObject::connect(appModel, &ApplicationModel::advanceOneGeneration, worker, &ConwayWorker::advanceOneGeneration);
     
 
     
