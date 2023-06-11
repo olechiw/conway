@@ -38,6 +38,7 @@ Window {
                 text: "Restart"
                 Layout.alignment: Qt.AlignBottom
                 id: restartButton
+                onClicked: ApplicationModel.restart()
             }
             Button {
                 text: "Advance One Generation"
