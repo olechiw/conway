@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defaults.h" />
+    <QtMoc Include="QSimpleBoundProperty.h" />
     <QtMoc Include="ApplicationModel.h" />
     <QtMoc Include="Meter.h" />
     <QtMoc Include="ConwayWorker.h" />

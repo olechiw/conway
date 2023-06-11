@@ -7,6 +7,7 @@
 #include <memory_resource>
 
 #include "ConwayGame.h"
+#include "QSimpleBoundProperty.h"
 
 class ConwayCanvas :
     public QQuickItem
@@ -23,5 +24,5 @@ public slots:
 
 private:
     ConwayGame::State _currentState;
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
 };
-

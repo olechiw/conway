@@ -60,6 +60,9 @@
     <QtMoc Include="ApplicationModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QSimpleBoundProperty.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="qmldir" />

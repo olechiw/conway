@@ -76,8 +76,14 @@ int main(int argc, char *argv[])
     QObject::connect(appModel, &ApplicationModel::generationDurMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
     QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
     QObject::connect(appModel, &ApplicationModel::advanceOneGeneration, worker, &ConwayWorker::advanceOneGeneration);
-    
 
+
+    // We currently only update the canvas from the worker, this will update regularly anyway i.e. to draw gridlines
+    QTimer* minimumFramerateTimer = new QTimer;
+    constexpr int REFRESH_RATE_MS = 16;
+    QObject::connect(minimumFramerateTimer, &QTimer::timeout, canvas, &ConwayCanvas::update);
+    minimumFramerateTimer->setInterval(REFRESH_RATE_MS);
+    minimumFramerateTimer->start();
     
     return app.exec();
 }

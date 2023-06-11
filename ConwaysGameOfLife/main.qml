@@ -22,7 +22,7 @@ Window {
             Layout.margins: 4
             ColumnLayout {
                 StandardLabel {
-                    text: "Minimum Generation Time (ms)"
+                    text: "Generation Lifespan (ms)"
                 }
                 SpinBox {
                     from: 0
@@ -50,6 +50,12 @@ Window {
                 Layout.alignment: Qt.AlignBottom
                 onClicked: ApplicationModel.paused = !ApplicationModel.paused;
             }
+            CheckBox {
+                text: "Draw Grid Lines"
+                Layout.alignment: Qt.AlignBottom
+                checked: false
+                id: drawGridLines
+            }
         }
 
         // Row 1, Column 2
@@ -58,17 +64,23 @@ Window {
             Layout.margins: 4
 
             StandardLabel {
+                Layout.alignment: Qt.AlignRight
                 text: Math.floor(ApplicationModel.currentFps) + " FPS"
             }
             StandardLabel {
+                Layout.alignment: Qt.AlignRight
                 text: ApplicationModel.currentPopulation + " Living Cells"
             }
             StandardLabel {
+                Layout.alignment: Qt.AlignRight
+
                 text: ApplicationModel.generations + " Generations"
             }
             StandardLabel {
+                Layout.alignment: Qt.AlignRight
+
                 id: simulationMeterLabel
-                text: Math.round(ApplicationModel.generationsPerSecond * 100) / 100 + " Generations per second"
+                text: Math.round(ApplicationModel.generationsPerSecond * 100) / 100 + " Generations/sec"
             }
         }
 
@@ -78,6 +90,7 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.columnSpan: 2
+            drawGridLines: drawGridLines.checked
         }
     }
 }
