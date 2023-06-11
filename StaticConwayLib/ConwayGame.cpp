@@ -5,10 +5,6 @@ static const std::vector<std::pair<int, int>> adjacentDirections = {
 	{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {-1, -1}, {1, -1}, {-1, 1}
 };
 
-ConwayGame::ConwayGame()
-{
-}
-
 void ConwayGame::setAlive(long x, long y, bool alive)
 {
 	if (_latestState.board[{x, y}] == alive) return;
@@ -32,6 +28,7 @@ void ConwayGame::step()
 	}
 	
 	std::swap(_latestState.board, _workingCells);
+	_latestState.generations++;
 }
 
 void ConwayGame::updateSize(const ConwayGame::CellPosition& cellPosition) {

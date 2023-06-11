@@ -23,4 +23,5 @@ class ApplicationModel : public QObject
 	Q_SIMPLE_BOUND_PROPERTY(ApplicationModel, uint64_t, generations, Generations, 0)
 
 	Q_SIGNAL void advanceOneGeneration();
+	Q_SIGNAL void restart();
 };

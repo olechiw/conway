@@ -30,9 +30,11 @@ public:
 	struct State {
 		Board board;
 		long size = DEFAULT_CONWAY_SIZE;
+		uint64_t generations = 0;
 	};
 
-	ConwayGame();
+	ConwayGame() = default;
+	~ConwayGame() = default;
 	void setAlive(long x, long y, bool alive = true);
 	void step();
 	const State& getState() const;

@@ -5,14 +5,16 @@
 #include <QThread>
 
 #include "ConwayGame.h"
-#include "Defaults.h"
+#include "ApplicationModel.h"
 
 class ConwayWorker : public QObject
 {
 	Q_OBJECT
 
 public:
-	ConwayWorker(ConwayGame* game, QThread* thread);
+	ConwayWorker(const ConwayGame& game, ApplicationModel *appModel, QThread* thread);
+private:
+	void emitUpdatedState();
 
 signals:
 	void setGameState(const ConwayGame::State& newState);
@@ -28,7 +30,8 @@ public slots:
 
 
 private:
-	ConwayGame* _game;
+	ConwayGame _game;
+	ConwayGame _initialGame;
 	QTimer* _timer;
 	uint64_t _generations;
 };

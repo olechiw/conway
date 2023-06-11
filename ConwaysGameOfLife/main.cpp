@@ -41,42 +41,33 @@ int main(int argc, char *argv[])
         return -1;
     
     ConwayCanvas* canvas = findChild<ConwayCanvas*>("conwayCanvas", engine);
+    QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
 
-    ConwayGame* game = new ConwayGame();
-    game->setAlive(0, -1);
-    game->setAlive(1, -1);
-    game->setAlive(-1, 0);
-    game->setAlive(0, 0);
-    game->setAlive(0, 1);
+    ConwayGame game;
+    game.setAlive(0, -1);
+    game.setAlive(1, -1);
+    game.setAlive(-1, 0);
+    game.setAlive(0, 0);
+    game.setAlive(0, 1);
 
     QThread* thread = new QThread;
-    ConwayWorker* worker = new ConwayWorker(game, thread);
+    ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
     thread->start();
 
     // Bind rendering - order matters this should have priority
     QObject::connect(worker, &ConwayWorker::setGameState, canvas, &ConwayCanvas::setGameState);
+    worker->reset();
 
+    // Maybe move the meters to the worker?
     // Bind Simulation Meter
     Meter* simulationMeter = new Meter;
     QObject::connect(worker, &ConwayWorker::setGameState, simulationMeter, &Meter::increment);
     QObject::connect(simulationMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setGenerationsPerSecond);
 
     // Bind FPS Meter
-    QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
     Meter* fpsMeter = new Meter;
     QObject::connect(window, &QQuickWindow::beforeRendering, fpsMeter, &Meter::increment);
     QObject::connect(fpsMeter, &Meter::meterUpdated, appModel, &ApplicationModel::setCurrentFps);
-
-    // Bind population tracker
-    QObject::connect(worker, &ConwayWorker::setPopulation, appModel, &ApplicationModel::setCurrentPopulation);
-    // Bind generations tracker
-    QObject::connect(worker, &ConwayWorker::setGenerations, appModel, &ApplicationModel::setGenerations);
-
-    // Bind config signals to worker
-    QObject::connect(appModel, &ApplicationModel::generationDurMsChanged, worker, &ConwayWorker::setDelayMilliseconds);
-    QObject::connect(appModel, &ApplicationModel::pausedChanged, worker, &ConwayWorker::setPaused);
-    QObject::connect(appModel, &ApplicationModel::advanceOneGeneration, worker, &ConwayWorker::advanceOneGeneration);
-
 
     // We currently only update the canvas from the worker, this will update regularly anyway i.e. to draw gridlines
     QTimer* minimumFramerateTimer = new QTimer;

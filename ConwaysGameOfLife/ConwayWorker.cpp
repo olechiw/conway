@@ -1,13 +1,26 @@
 #include "ConwayWorker.h"
 
-ConwayWorker::ConwayWorker(ConwayGame* game, QThread* thread): _game(game), _generations(0)
+ConwayWorker::ConwayWorker(const ConwayGame &game, 
+	ApplicationModel *appModel, 
+	QThread* thread): _game(game), _initialGame(game), _generations(0)
 {
-	// TODO: default configurations
 	this->moveToThread(thread);
 	_timer = new QTimer;
-	connect(_timer, SIGNAL(timeout()), this, SLOT(advanceOneGeneration()));
-	_timer->setInterval(DEFAULT_GENERATION_DURATION_MILLISECONDS);
+	connect(_timer, &QTimer::timeout, this, &ConwayWorker::advanceOneGeneration);
+	_timer->setInterval(appModel->getGenerationDurMs());
 	_timer->moveToThread(thread);
+
+	// Bind configuration signals to worker
+	connect(appModel, &ApplicationModel::generationDurMsChanged, this, &ConwayWorker::setDelayMilliseconds);
+	connect(appModel, &ApplicationModel::pausedChanged, this, &ConwayWorker::setPaused);
+	connect(appModel, &ApplicationModel::advanceOneGeneration, this, &ConwayWorker::advanceOneGeneration);
+	connect(appModel, &ApplicationModel::restart, this, &ConwayWorker::reset);
+
+	// Bind output signals to model
+	connect(this, &ConwayWorker::setPopulation, appModel, &ApplicationModel::setCurrentPopulation);
+	connect(this, &ConwayWorker::setGenerations, appModel, &ApplicationModel::setGenerations);
+
+	emitUpdatedState();
 }
 
 void ConwayWorker::setDelayMilliseconds(int delay)
@@ -23,7 +36,8 @@ void ConwayWorker::setPaused(bool paused)
 
 void ConwayWorker::reset()
 {
-	emit setGenerations(0);
+	_game = _initialGame;
+	emitUpdatedState();
 }
 
 void ConwayWorker::startTimer()
@@ -33,8 +47,13 @@ void ConwayWorker::startTimer()
 
 void ConwayWorker::advanceOneGeneration()
 {
-	_game->step();
-	emit setGenerations(++_generations);
-	emit setPopulation(_game->getState().board.size());
-	emit setGameState(_game->getState());
+	_game.step();
+	emitUpdatedState();
+}
+
+void ConwayWorker::emitUpdatedState()
+{
+	emit setGenerations(_game.getState().generations);
+	emit setPopulation(_game.getState().board.size());
+	emit setGameState(_game.getState());
 }
