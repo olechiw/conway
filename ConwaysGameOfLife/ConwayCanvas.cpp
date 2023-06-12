@@ -79,12 +79,15 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     const auto originOffsetY = (height() / 2 - grid.cellHeight / 2 + 1);
 
     for (const auto& [cellPosition, _] : _latestState.grid) {
+        const auto renderX = (cellPosition.x - grid.originX) * grid.cellWidth + originOffsetX;
+        const auto renderY = (cellPosition.y - grid.originY) * grid.cellHeight + originOffsetY;
+        if (!boundingRect().contains(renderX, renderY)) continue;
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
         rectToRender->setColor(Qt::green);
         rectToRender->setRect(
-            (cellPosition.x - grid.originX) * grid.cellWidth + originOffsetX,
-            (cellPosition.y - grid.originY) * grid.cellHeight + originOffsetY,
+            renderX,
+            renderY,
             std::max(grid.cellWidth - 1, 1.),
             std::max(grid.cellHeight - 1, 1.));
         n->appendChildNode(rectToRender);
@@ -99,7 +102,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 void ConwayCanvas::mousePressEvent(QMouseEvent* event)
 {
     GridStatistics grid = getGridStatistics();
-    const int64_t x = int64_t(event->pos().x() / grid.cellWidth) - int64_t(grid.gridSize / 2) - grid.originX;
-    const int64_t y = int64_t(event->pos().y() / grid.cellHeight) - int64_t(grid.gridSize / 2) - grid.originY;
+    const int64_t x = int64_t(event->pos().x() / grid.cellWidth) - int64_t(grid.gridSize / 2) + grid.originX;
+    const int64_t y = int64_t(event->pos().y() / grid.cellHeight) - int64_t(grid.gridSize / 2) + grid.originY;
     emit onClicked(x, y);
 }

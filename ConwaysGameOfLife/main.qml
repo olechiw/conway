@@ -18,13 +18,13 @@ Window {
         focus: true
         Keys.onPressed: (event) => {
             if (event.key == Qt.Key_Left) {
-                conwayCanvas.userViewX += 1
-            } else if (event.key == Qt.Key_Right) {
                 conwayCanvas.userViewX -= 1
+            } else if (event.key == Qt.Key_Right) {
+                conwayCanvas.userViewX += 1
             } else if (event.key == Qt.Key_Up) {
-                conwayCanvas.userViewY += 1
-            } else if (event.key == Qt.Key_Down) {
                 conwayCanvas.userViewY -= 1
+            } else if (event.key == Qt.Key_Down) {
+                conwayCanvas.userViewY += 1
             }
         }
         // Row 1, Column 1
