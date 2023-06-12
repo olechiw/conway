@@ -15,7 +15,18 @@ Window {
         rows: 2
         columns: 2
         anchors.fill: parent
-
+        focus: true
+        Keys.onPressed: (event) => {
+            if (event.key == Qt.Key_Left) {
+                conwayCanvas.userViewX += 1
+            } else if (event.key == Qt.Key_Right) {
+                conwayCanvas.userViewX -= 1
+            } else if (event.key == Qt.Key_Up) {
+                conwayCanvas.userViewY += 1
+            } else if (event.key == Qt.Key_Down) {
+                conwayCanvas.userViewY -= 1
+            }
+        }
         // Row 1, Column 1
         RowLayout {
             Layout.margins: 4
@@ -91,6 +102,7 @@ Window {
             Layout.fillHeight: true
             Layout.columnSpan: 2
             drawGridLines: drawGridLines.checked
+            enableUserView: true
         }
     }
 }
