@@ -1,6 +1,6 @@
 #include "ConwayCanvas.h"
 
-ConwayCanvas::ConwayCanvas(QQuickItem* parent)
+ConwayCanvas::ConwayCanvas(QQuickItem*)
 {
     setFlag(Flag::ItemHasContents);
     connect(&_renderTimer, &QTimer::timeout, this, &ConwayCanvas::update);
@@ -46,6 +46,8 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
     }
     else {
         stats.gridSize = std::max(_currentState.largestXSeen, _currentState.largestYSeen) * 2 + 1;
+        stats.originX = 0;
+        stats.originY = 0;
     }
     stats.cellWidth = width() / stats.gridSize;
     stats.cellHeight = height() / stats.gridSize;

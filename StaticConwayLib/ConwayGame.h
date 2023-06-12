@@ -13,9 +13,7 @@ public:
 	struct CellPosition {
 		int64_t x, y;
 
-		bool operator==(const CellPosition& right) const {
-			return x == right.x && y == right.y;
-		}
+		auto operator<=>(const CellPosition& other) const = default;
 
 		template <typename H>
 		friend H AbslHashValue(H h, const ConwayGame::CellPosition& cellPosition) {
@@ -42,7 +40,7 @@ public:
 private:
 	void updateSize(const ConwayGame::CellPosition& cellPosition);
 	void updateWorkingCellsFromAdjacency();
-	Board _workingCells;
-	State _latestState;
-	absl::flat_hash_map<CellPosition, uint8_t> _adjacentCells;
+	Board _workingCells{};
+	State _latestState{};
+	absl::flat_hash_map<CellPosition, uint8_t> _adjacentCells {};
 };

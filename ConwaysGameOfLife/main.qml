@@ -25,7 +25,7 @@ Window {
                     text: "Generation Lifespan (ms)"
                 }
                 SpinBox {
-                    from: 0
+                    from: 1
                     to: 1000
                     editable: true
                     value: ApplicationModel.generationDurMs

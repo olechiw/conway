@@ -21,10 +21,6 @@ static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
 
 int main(int argc, char *argv[])
 {
-#if defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-
     qmlRegisterType<ConwayCanvas>("Conway", 1, 0, "ConwayCanvas");
     qmlRegisterType<Meter>("Conway", 1, 0, "Meter");
     ApplicationModel* appModel = new ApplicationModel;
@@ -48,6 +44,10 @@ int main(int argc, char *argv[])
     QThread* thread = new QThread;
     ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
     thread->start();
+
+    QThread* appModelThread = new QThread;
+    appModel->moveToThread(appModelThread);
+    appModelThread->start();
 
     // Bind game state updates
     QObject::connect(worker, &ConwayWorker::gameStateChanged, canvas, &ConwayCanvas::gameStateChanged);
