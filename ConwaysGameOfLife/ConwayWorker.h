@@ -32,11 +32,11 @@ public slots:
 
 
 private:
-	ConwayGame _game;
-	ConwayGame _initialGame;
+	ConwayGame _game{};
+	ConwayGame _initialGame{};
 	QTimer* _timer;
-	uint64_t _generations;
+	uint64_t _generations{};
 
-	QMutex _stateMutex;
-	ConwayGame::State _latestState;
+	QMutex _stateMutex{};
+	ConwayGame::State _latestState{};
 };

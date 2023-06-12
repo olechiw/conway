@@ -18,7 +18,7 @@ private slots:
 	void report();
 
 signals:
-	ConwayGame::State requestState();
+	ConwayGame::State requestLatestState();
 	void updateGenerationsPerSecond(double generationsPerSecond);
 	void updateGeneration(uint64_t generation);
 	void updatePopulation(size_t population);

@@ -13,7 +13,7 @@ GameStatsReporter::GameStatsReporter(ApplicationModel* appModel)
 
 void GameStatsReporter::report() 
 {
-	ConwayGame::State state = emit requestState();
+	ConwayGame::State state = emit requestLatestState();
 	emit updateGeneration(state.generations);
 	emit updatePopulation(state.grid.size());
 	if (state.generations > _lastState.generations)
