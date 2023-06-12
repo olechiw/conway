@@ -13,6 +13,7 @@ class ConwayWorker : public QObject
 
 public:
 	ConwayWorker(const ConwayGame& initialGame, ApplicationModel *appModel, QThread* thread);
+	~ConwayWorker();
 private:
 	void emitUpdatedState();
 

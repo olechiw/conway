@@ -23,6 +23,12 @@ ConwayWorker::ConwayWorker(const ConwayGame &game,
 	emitUpdatedState();
 }
 
+ConwayWorker::~ConwayWorker()
+{
+	_timer->stop();
+	delete _timer;
+}
+
 void ConwayWorker::setDelayMilliseconds(int delay)
 {
 	_timer->setInterval(delay);

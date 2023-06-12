@@ -45,10 +45,6 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
     thread->start();
 
-    QThread* appModelThread = new QThread;
-    appModel->moveToThread(appModelThread);
-    appModelThread->start();
-
     // Bind game state updates
     QObject::connect(worker, &ConwayWorker::gameStateChanged, canvas, &ConwayCanvas::gameStateChanged);
     worker->reset();
