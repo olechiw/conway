@@ -41,6 +41,9 @@
     <ClCompile Include="Meter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameStatsReporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defaults.h">
@@ -54,13 +57,16 @@
     <QtMoc Include="ConwayWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Meter.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="ApplicationModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="QSimpleBoundProperty.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Meter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GameStatsReporter.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -5,8 +5,8 @@
 #include <QBindable>
 
 #include "Defaults.h"
-#include "QSimpleBoundProperty.h"
 #include "Meter.h"
+#include "QSimpleBoundProperty.h"
 
 
 class ApplicationModel : public QObject
@@ -26,13 +26,14 @@ class ApplicationModel : public QObject
 	Q_SIGNAL void advanceOneGeneration();
 	Q_SIGNAL void restart();
 
-public:
-	Meter currentFpsMeter;
-	Meter generationsPerSecondMeter;
-
+private:
+	Meter _fpsMeter;
 public:
 	ApplicationModel() {
-		connect(&currentFpsMeter, &Meter::meterUpdated, this, &ApplicationModel::setCurrentFps);
-		connect(&generationsPerSecondMeter, &Meter::meterUpdated, this, &ApplicationModel::setGenerationsPerSecond);
+		connect(&_fpsMeter, &Meter::meterUpdated, this, &ApplicationModel::setCurrentFps);
+	}
+public slots:
+	void incrementFps() {
+		_fpsMeter.increment();
 	}
 };

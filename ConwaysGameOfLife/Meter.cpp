@@ -1,12 +1,16 @@
 #include "Meter.h"
 
 void Meter::increment() {
+    incrementBy(1);
+}
+
+void Meter::incrementBy(uint64_t value) {
     _totalDuration += _timer.elapsed();
-    ++_frameCount;
+    _count += value;
     if (_totalDuration > UPDATE_TIME_MS) {
-        emit meterUpdated((1000.0 * _frameCount) / _totalDuration);
+        emit meterUpdated((1000.0 * _count) / _totalDuration);
         _totalDuration = 0;
-        _frameCount = 0;
+        _count = 0;
     }
     _timer.restart();
 }

@@ -13,13 +13,14 @@ public:
 
 public slots:
 	void increment();
+	void incrementBy(uint64_t value);
 
 signals:
-	void meterUpdated(double newFPS);
+	void meterUpdated(double value);
 
 private:
 	QElapsedTimer _timer;
-	int _frameCount = 0;
-	int _totalDuration = 0;
+	uint64_t _count = 0;
+	uint64_t _totalDuration = 0;
 };
 

@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClCompile Include="ConwayCanvas.cpp" />
     <ClCompile Include="ConwayWorker.cpp" />
+    <ClCompile Include="GameStatsReporter.cpp" />
     <ClCompile Include="Meter.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="qmldir" />
@@ -116,9 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defaults.h" />
+    <QtMoc Include="GameStatsReporter.h" />
+    <QtMoc Include="Meter.h" />
     <QtMoc Include="QSimpleBoundProperty.h" />
     <QtMoc Include="ApplicationModel.h" />
-    <QtMoc Include="Meter.h" />
     <QtMoc Include="ConwayWorker.h" />
     <QtMoc Include="ConwayCanvas.h" />
   </ItemGroup>

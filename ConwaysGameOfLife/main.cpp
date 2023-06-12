@@ -10,6 +10,7 @@
 #include "ConwayWorker.h"
 #include "Meter.h"
 #include "ApplicationModel.h"
+#include "GameStatsReporter.h"
 
 template<typename T>
 static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
@@ -45,14 +46,17 @@ int main(int argc, char *argv[])
     ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
     thread->start();
 
-    // Bind game state updates
-    QObject::connect(worker, &ConwayWorker::gameStateChanged, canvas, &ConwayCanvas::gameStateChanged);
-    worker->reset();
-    QObject::connect(canvas, &ConwayCanvas::onClicked, worker, &ConwayWorker::setAlive);
 
-    // Bind Meters
-    QObject::connect(worker, &ConwayWorker::gameStateChanged, &appModel->generationsPerSecondMeter, &Meter::increment);
-    QObject::connect(window, &QQuickWindow::beforeRendering, &appModel->currentFpsMeter, &Meter::increment);
+    GameStatsReporter* reporter = new GameStatsReporter(appModel);
+    // Bind game state updates
+    QObject::connect(canvas, &ConwayCanvas::requestLatestState, worker, &ConwayWorker::getState, Qt::DirectConnection);
+    QObject::connect(reporter, &GameStatsReporter::requestState, worker, &ConwayWorker::getState, Qt::DirectConnection);
+
+    // Bind Fps Meter
+    QObject::connect(window, &QQuickWindow::beforeRendering, appModel, &ApplicationModel::incrementFps);
+
+    // Bind click handler
+    QObject::connect(canvas, &ConwayCanvas::onClicked, worker, &ConwayWorker::setAlive);
     
     return app.exec();
 }
@@ -60,6 +64,7 @@ int main(int argc, char *argv[])
 /*
 * Snapshotting
 * Ability to zoom in/out, reworking the concept of "size" to be less jank (part of the ApplicationModel?)
+* Rate limit the emission of values (only generation? because generation is the one going to AppModel)
 * Evaluate different simulation algorithms
 * Pan around? (arrow keys?) + reset view
 * Menubar with hotkeys to make controls more organized

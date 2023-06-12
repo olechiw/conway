@@ -20,11 +20,9 @@ public:
     QSGNode* updatePaintNode(QSGNode* node, UpdatePaintNodeData*) override;
     void mousePressEvent(QMouseEvent* event) override;
 
-public slots:
-    void gameStateChanged(const ConwayGame::State& state);
-
 signals:
     void onClicked(int64_t x, int64_t y);
+    ConwayGame::State requestLatestState();
 
 private:
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
@@ -33,7 +31,7 @@ private:
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewY, UserViewY, 0);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserView, EnableUserView, false);
 
-    ConwayGame::State _currentState;
+    ConwayGame::State _latestState;
     QTimer _renderTimer;
     struct GridStatistics {
         uint64_t gridSize; // Width or Height, grid is always a square (for now)

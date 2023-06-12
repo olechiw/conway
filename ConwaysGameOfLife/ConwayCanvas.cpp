@@ -45,7 +45,7 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
         stats.originY = getUserViewY();
     }
     else {
-        stats.gridSize = std::max(_currentState.largestXSeen, _currentState.largestYSeen) * 2 + 1;
+        stats.gridSize = std::max(_latestState.largestXSeen, _latestState.largestYSeen) * 2 + 1;
         stats.originX = 0;
         stats.originY = 0;
     }
@@ -58,6 +58,8 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
 // Rectangles are positioned from top left
 QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 {
+    _latestState = emit requestLatestState();
+
     QSGSimpleRectNode* n = static_cast<QSGSimpleRectNode*>(node);
     if (!n) {
         n = new QSGSimpleRectNode();
@@ -76,7 +78,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     const auto originOffsetX = (width() / 2 - grid.cellWidth / 2 + 1);
     const auto originOffsetY = (height() / 2 - grid.cellHeight / 2 + 1);
 
-    for (const auto& [cellPosition, _] : _currentState.board) {
+    for (const auto& [cellPosition, _] : _latestState.board) {
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
         rectToRender->setColor(Qt::green);
@@ -100,9 +102,4 @@ void ConwayCanvas::mousePressEvent(QMouseEvent* event)
     const int64_t x = int64_t(event->pos().x() / grid.cellWidth) - int64_t(grid.gridSize / 2) - grid.originX;
     const int64_t y = int64_t(event->pos().y() / grid.cellHeight) - int64_t(grid.gridSize / 2) - grid.originY;
     emit onClicked(x, y);
-}
-
-void ConwayCanvas::gameStateChanged(const ConwayGame::State& state)
-{
-    _currentState = state;
 }

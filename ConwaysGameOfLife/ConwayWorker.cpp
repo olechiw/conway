@@ -1,7 +1,7 @@
 #include "ConwayWorker.h"
 
 ConwayWorker::ConwayWorker(const ConwayGame &game, 
-	ApplicationModel *appModel, 
+	ApplicationModel *appModel,
 	QThread* thread): _game(game), _initialGame(game), _generations(0)
 {
 	this->moveToThread(thread);
@@ -16,11 +16,11 @@ ConwayWorker::ConwayWorker(const ConwayGame &game,
 	connect(appModel, &ApplicationModel::advanceOneGeneration, this, &ConwayWorker::advanceOneGeneration);
 	connect(appModel, &ApplicationModel::restart, this, &ConwayWorker::reset);
 
-	// Bind output signals to model
-	connect(this, &ConwayWorker::populationChanged, appModel, &ApplicationModel::setCurrentPopulation);
-	connect(this, &ConwayWorker::generationChanged, appModel, &ApplicationModel::setGeneration);
+	// Worker is designed to run at extremely high frequency and so it shouldn't be doing any signal emission
+	// connect(this, &ConwayWorker::populationChanged, appModel, &ApplicationModel::setCurrentPopulation);
+	// connect(this, &ConwayWorker::generationChanged, appModel, &ApplicationModel::setGeneration);
 
-	emitUpdatedState();
+	setState();
 }
 
 ConwayWorker::~ConwayWorker()
@@ -43,7 +43,7 @@ void ConwayWorker::setPaused(bool paused)
 void ConwayWorker::reset()
 {
 	_game = _initialGame;
-	emitUpdatedState();
+	setState();
 }
 
 void ConwayWorker::startTimer()
@@ -57,24 +57,29 @@ void ConwayWorker::setGame(const ConwayGame& game, bool setNewInitialGame)
 	if (setNewInitialGame) {
 		_initialGame = game;
 	}
-	emitUpdatedState();
+	setState();
 }
 
 void ConwayWorker::setAlive(int64_t x, int64_t y)
 {
 	_game.setAlive(x, y);
-	emitUpdatedState();
+	setState();
 }
 
 void ConwayWorker::advanceOneGeneration()
 {
 	_game.step();
-	emitUpdatedState();
+	setState();
 }
 
-void ConwayWorker::emitUpdatedState()
+void ConwayWorker::setState()
 {
-	emit generationChanged(_game.getState().generations);
-	emit populationChanged(_game.getState().board.size());
-	emit gameStateChanged(_game.getState());
+	QMutexLocker locker(&_stateMutex);
+	_latestState = _game.getState();
+}
+
+ConwayGame::State ConwayWorker::getState()
+{
+	QMutexLocker locker(&_stateMutex);
+	return _latestState;
 }
