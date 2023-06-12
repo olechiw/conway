@@ -18,9 +18,13 @@ public:
     ConwayCanvas(QQuickItem* parent = nullptr);
 
     QSGNode* updatePaintNode(QSGNode* node, UpdatePaintNodeData*) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
 public slots:
     void gameStateChanged(const ConwayGame::State& state);
+
+signals:
+    void onClicked(long x, long y);
 
 private:
     ConwayGame::State _currentState;

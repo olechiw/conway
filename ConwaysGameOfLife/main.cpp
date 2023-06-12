@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
     // Bind game state updates
     QObject::connect(worker, &ConwayWorker::gameStateChanged, canvas, &ConwayCanvas::gameStateChanged);
     worker->reset();
+    QObject::connect(canvas, &ConwayCanvas::onClicked, worker, &ConwayWorker::setAlive);
 
     // Bind Meters
     QObject::connect(worker, &ConwayWorker::gameStateChanged, &appModel->generationsPerSecondMeter, &Meter::increment);
@@ -61,9 +62,11 @@ int main(int argc, char *argv[])
 }
 
 /*
-* A click handler which draws on the game board
+* Snapshotting
 * Ability to zoom in/out, reworking the concept of "size" to be less jank (part of the ApplicationModel?)
 * Evaluate different simulation algorithms
 * Pan around? (arrow keys?) + reset view
 * Menubar with hotkeys to make controls more organized
+* Check all integer overflows
+* Wrapping behavior
 */

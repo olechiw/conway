@@ -8,7 +8,7 @@ import Conway 1.0
 Window {
     visible: true
     width: 1000
-    height: 1000
+    height: 1100
     title: qsTr("Conway's Game of Life")
     objectName: "mainWindow"
 
