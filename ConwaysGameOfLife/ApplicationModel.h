@@ -30,7 +30,7 @@ private:
 	Meter _fpsMeter;
 public:
 	ApplicationModel() {
-		connect(&_fpsMeter, &Meter::meterUpdated, this, &ApplicationModel::setCurrentFps);
+		connect(&_fpsMeter, &Meter::onMeterUpdated, this, &ApplicationModel::setCurrentFps);
 	}
 public slots:
 	void incrementFps() {

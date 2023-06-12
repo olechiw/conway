@@ -8,7 +8,7 @@ void Meter::incrementBy(uint64_t value) {
     _totalDuration += _timer.elapsed();
     _count += value;
     if (_totalDuration > UPDATE_TIME_MS) {
-        emit meterUpdated((1000.0 * _count) / _totalDuration);
+        emit onMeterUpdated((1000.0 * _count) / _totalDuration);
         _totalDuration = 0;
         _count = 0;
     }

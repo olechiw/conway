@@ -16,7 +16,7 @@ public slots:
 	void incrementBy(uint64_t value);
 
 signals:
-	void meterUpdated(double value);
+	void onMeterUpdated(double value);
 
 private:
 	QElapsedTimer _timer;
