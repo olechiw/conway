@@ -21,6 +21,24 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{2dd82375-26f0-4314-9984-a8a837dcb2c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{aeb0d4cd-ff53-4559-83ec-d694cbfee145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Data">
+      <UniqueIdentifier>{9ed8c92a-8d86-4a48-95dc-b68d0cd48e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{e2739a58-f726-47ec-9c54-4a26aa091fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{a24ab406-a6ab-40f0-b019-965b7f8395ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Data">
+      <UniqueIdentifier>{fcc718cb-2441-4559-b6ee-32f3ddc877af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,48 +50,42 @@
     <None Include="main.qml">
       <Filter>Source Files</Filter>
     </None>
-    <ClCompile Include="ConwayCanvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConwayWorker.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Meter.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ConwayCanvas.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GameStatsReporter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Data</Filter>
     </ClCompile>
+    <ClCompile Include="Meter.cpp">
+      <Filter>Source Files\Data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ConwayWorker.h">
+      <Filter>Header Files\Simulation</Filter>
+    </QtMoc>
+    <QtMoc Include="ApplicationModel.h">
+      <Filter>Header Files\Data</Filter>
+    </QtMoc>
+    <QtMoc Include="QSimpleBoundProperty.h">
+      <Filter>Header Files\Data</Filter>
+    </QtMoc>
+    <QtMoc Include="Meter.h">
+      <Filter>Header Files\Data</Filter>
+    </QtMoc>
+    <QtMoc Include="ConwayCanvas.h">
+      <Filter>Header Files\Rendering</Filter>
+    </QtMoc>
+    <QtMoc Include="GameStatsReporter.h">
+      <Filter>Header Files\Data</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defaults.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="ConwayCanvas.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ConwayWorker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ApplicationModel.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="QSimpleBoundProperty.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Meter.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GameStatsReporter.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="qmldir" />
-    <None Include="StandardLabel.qml">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

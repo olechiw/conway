@@ -20,6 +20,17 @@ static T findChild(const QString& name, const QQmlApplicationEngine &engine) {
     return engine.rootObjects().first()->findChild<T>(name);
 }
 
+ConwayGame getDefaultGame()
+{
+    ConwayGame game;
+    game.setAlive(0, -1);
+    game.setAlive(1, -1);
+    game.setAlive(-1, 0);
+    game.setAlive(0, 0);
+    game.setAlive(0, 1);
+    return game;
+}
+
 int main(int argc, char *argv[])
 {
     qmlRegisterType<ConwayCanvas>("Conway", 1, 0, "ConwayCanvas");
@@ -35,15 +46,8 @@ int main(int argc, char *argv[])
     ConwayCanvas* canvas = findChild<ConwayCanvas*>("conwayCanvas", engine);
     QQuickWindow* window = findChild<QQuickWindow*>("mainWindow", engine);
 
-    ConwayGame game;
-    game.setAlive(0, -1);
-    game.setAlive(1, -1);
-    game.setAlive(-1, 0);
-    game.setAlive(0, 0);
-    game.setAlive(0, 1);
-
     QThread* thread = new QThread;
-    ConwayWorker* worker = new ConwayWorker(game, appModel, thread);
+    ConwayWorker* worker = new ConwayWorker(getDefaultGame(), appModel, thread);
     thread->start();
 
     GameStatsReporter* reporter = new GameStatsReporter(appModel);

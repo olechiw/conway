@@ -1,8 +1,8 @@
 #pragma once
-#include <QtQuick/QQuickPaintedItem>
 #include <QColor>
 #include <QSGSimpleRectNode>
 #include <QTimer>
+#include <QQuickItem>
 
 #include "ConwayGame.h"
 #include "QSimpleBoundProperty.h"

@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Layouts
 import QtQuick.Controls
-// import QtQuick.Controls.Material
 import Conway 1.0
 
 Window {
@@ -21,7 +20,7 @@ Window {
         RowLayout {
             Layout.margins: 4
             ColumnLayout {
-                StandardLabel {
+                Label {
                     text: "Generation Lifespan (ms)"
                 }
                 SpinBox {
@@ -64,20 +63,20 @@ Window {
             Layout.alignment: Qt.AlignRight
             Layout.margins: 4
 
-            StandardLabel {
+            Label {
                 Layout.alignment: Qt.AlignRight
                 text: Math.floor(ApplicationModel.currentFps) + " FPS"
             }
-            StandardLabel {
+            Label {
                 Layout.alignment: Qt.AlignRight
                 text: ApplicationModel.currentPopulation + " Living Cells"
             }
-            StandardLabel {
+            Label {
                 Layout.alignment: Qt.AlignRight
 
                 text: ApplicationModel.generation + " Generations"
             }
-            StandardLabel {
+            Label {
                 Layout.alignment: Qt.AlignRight
 
                 id: simulationMeterLabel

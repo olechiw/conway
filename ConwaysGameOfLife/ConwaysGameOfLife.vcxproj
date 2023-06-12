@@ -110,8 +110,6 @@
     <ClCompile Include="GameStatsReporter.cpp" />
     <ClCompile Include="Meter.cpp" />
     <ClCompile Include="main.cpp" />
-    <None Include="qmldir" />
-    <None Include="StandardLabel.qml" />
     <QtRcc Include="qml.qrc" />
     <None Include="main.qml" />
   </ItemGroup>
