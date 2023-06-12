@@ -28,7 +28,7 @@ public slots:
 	void reset();
 	void startTimer();
 	void setGame(const ConwayGame& game, bool setNewInitialGame = true);
-	void setAlive(long x, long y);
+	void setAlive(int64_t x, int64_t y);
 
 
 private:

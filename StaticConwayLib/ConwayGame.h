@@ -11,7 +11,7 @@ class ConwayGame
 {
 public:
 	struct CellPosition {
-		long x, y;
+		int64_t x, y;
 
 		bool operator==(const CellPosition& right) const {
 			return x == right.x && y == right.y;
@@ -29,13 +29,14 @@ public:
 	using Board = absl::flat_hash_map<CellPosition, bool>;
 	struct State {
 		Board board;
-		long size = DEFAULT_CONWAY_SIZE;
+		int64_t largestXSeen;
+		int64_t largestYSeen;
 		uint64_t generations = 0;
 	};
 
 	ConwayGame() = default;
 	~ConwayGame() = default;
-	void setAlive(long x, long y, bool alive = true);
+	void setAlive(int64_t x, int64_t y, bool alive = true);
 	void step();
 	const State& getState() const;
 private:

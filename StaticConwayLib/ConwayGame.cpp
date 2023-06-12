@@ -5,7 +5,7 @@ static const std::vector<std::pair<int, int>> adjacentDirections = {
 	{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {-1, -1}, {1, -1}, {-1, 1}
 };
 
-void ConwayGame::setAlive(long x, long y, bool alive)
+void ConwayGame::setAlive(int64_t x, int64_t y, bool alive)
 {
 	if (_latestState.board[{x, y}] == alive) return;
 	_latestState.board[{x, y}] = alive;
@@ -32,8 +32,8 @@ void ConwayGame::step()
 }
 
 void ConwayGame::updateSize(const ConwayGame::CellPosition& cellPosition) {
-	_latestState.size = std::max(abs(cellPosition.x), _latestState.size);
-	_latestState.size = std::max(abs(cellPosition.y), _latestState.size);
+	_latestState.largestXSeen = std::max(abs(cellPosition.x), _latestState.largestXSeen);
+	_latestState.largestYSeen = std::max(abs(cellPosition.y), _latestState.largestYSeen);
 }
 
 void ConwayGame::updateWorkingCellsFromAdjacency()

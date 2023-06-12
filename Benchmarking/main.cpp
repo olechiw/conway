@@ -13,7 +13,7 @@ using std::cout;
 using std::endl;
 
 int main() {
-    std::vector<std::pair<std::string, std::vector<std::pair<long, long>>>> boards =
+    std::vector<std::pair<std::string, std::vector<std::pair<int64_t, int64_t>>>> boards =
     { 
         { "R-board", {
             { 0, -1 },

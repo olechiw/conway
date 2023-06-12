@@ -24,10 +24,24 @@ public slots:
     void gameStateChanged(const ConwayGame::State& state);
 
 signals:
-    void onClicked(long x, long y);
+    void onClicked(int64_t x, int64_t y);
 
 private:
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewSize, UserViewSize, 5);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewX, UserViewX, 0);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewY, UserViewY, 0);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserView, EnableUserView, false);
+
     ConwayGame::State _currentState;
     QTimer _renderTimer;
-    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
+    struct GridStatistics {
+        uint64_t gridSize; // Width or Height, grid is always a square (for now)
+        double cellWidth;
+        double cellHeight;
+        // Origin of view
+        double originX;
+        double originY;
+    };
+    GridStatistics getGridStatistics();
 };

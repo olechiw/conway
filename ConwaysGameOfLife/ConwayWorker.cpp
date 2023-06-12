@@ -54,7 +54,7 @@ void ConwayWorker::setGame(const ConwayGame& game, bool setNewInitialGame)
 	emitUpdatedState();
 }
 
-void ConwayWorker::setAlive(long x, long y)
+void ConwayWorker::setAlive(int64_t x, int64_t y)
 {
 	_game.setAlive(x, y);
 	emitUpdatedState();
