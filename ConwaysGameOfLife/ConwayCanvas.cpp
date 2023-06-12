@@ -78,7 +78,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     const auto originOffsetX = (width() / 2 - grid.cellWidth / 2 + 1);
     const auto originOffsetY = (height() / 2 - grid.cellHeight / 2 + 1);
 
-    for (const auto& [cellPosition, _] : _latestState.board) {
+    for (const auto& [cellPosition, _] : _latestState.grid) {
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
         rectToRender->setColor(Qt::green);

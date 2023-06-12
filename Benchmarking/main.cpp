@@ -13,9 +13,9 @@ using std::cout;
 using std::endl;
 
 int main() {
-    std::vector<std::pair<std::string, std::vector<std::pair<int64_t, int64_t>>>> boards =
+    std::vector<std::pair<std::string, std::vector<std::pair<int64_t, int64_t>>>> grids =
     { 
-        { "R-board", {
+        { "R-Grid", {
             { 0, -1 },
             { 1, -1 },
             { -1, 0},
@@ -26,9 +26,9 @@ int main() {
 
     constexpr size_t ITER = 30000;
 
-    for (const auto& [name, board] : boards) {
+    for (const auto& [name, grid] : grids) {
         ConwayGame game;
-        for (const auto& [x, y] : board)
+        for (const auto& [x, y] : grid)
             game.setAlive(x, y);
 
         const auto start = high_resolution_clock::now();

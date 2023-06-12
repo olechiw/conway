@@ -15,7 +15,7 @@ void GameStatsReporter::report()
 {
 	ConwayGame::State state = emit requestState();
 	emit updateGeneration(state.generations);
-	emit updatePopulation(state.board.size());
+	emit updatePopulation(state.grid.size());
 	if (state.generations > _lastState.generations)
 		_generationsPerSecondMeter.incrementBy(state.generations - _lastState.generations);
 	_lastState = state;

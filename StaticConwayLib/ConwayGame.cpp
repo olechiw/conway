@@ -6,8 +6,8 @@ static const std::vector<std::pair<int, int>> adjacentDirections = {
 
 void ConwayGame::setAlive(int64_t x, int64_t y, bool alive)
 {
-	if (_latestState.board[{x, y}] == alive) return;
-	_latestState.board[{x, y}] = alive;
+	if (_latestState.grid[{x, y}] == alive) return;
+	_latestState.grid[{x, y}] = alive;
 	updateSize({ x, y });
 	for (const auto& [xDir, yDir] : adjacentDirections) {
 		_adjacentCells[{x + xDir, y + yDir}] += (alive) ? 1 : -1;
@@ -26,7 +26,7 @@ void ConwayGame::step()
 		}
 	}
 	
-	std::swap(_latestState.board, _workingCells);
+	std::swap(_latestState.grid, _workingCells);
 	_latestState.generations++;
 }
 
@@ -39,7 +39,7 @@ void ConwayGame::updateWorkingCellsFromAdjacency()
 {
 	_workingCells.clear();
 	for (auto& [cellPosition, value] : _adjacentCells) {
-		if (value == 3 || (value == 2 && _latestState.board[cellPosition]))
+		if (value == 3 || (value == 2 && _latestState.grid[cellPosition]))
 			_workingCells.insert({ {cellPosition.x, cellPosition.y}, true });
 	}
 }

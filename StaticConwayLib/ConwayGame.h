@@ -24,9 +24,9 @@ public:
 		size_t operator()(const CellPosition& cell) const;
 	};
 
-	using Board = absl::flat_hash_map<CellPosition, bool>;
+	using Grid = absl::flat_hash_map<CellPosition, bool>;
 	struct State {
-		Board board;
+		Grid grid;
 		int64_t largestXSeen;
 		int64_t largestYSeen;
 		uint64_t generations = 0;
@@ -40,7 +40,7 @@ public:
 private:
 	void updateSize(const ConwayGame::CellPosition& cellPosition);
 	void updateWorkingCellsFromAdjacency();
-	Board _workingCells{};
+	Grid _workingCells{};
 	State _latestState{};
 	absl::flat_hash_map<CellPosition, uint8_t> _adjacentCells {};
 };
