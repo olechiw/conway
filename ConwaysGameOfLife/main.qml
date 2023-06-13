@@ -12,6 +12,7 @@ ApplicationWindow {
     title: qsTr("Conway's Game of Life")
     objectName: "mainWindow"
     id: mainWindow
+    color: "black"
 
     QtLabs.MenuBar {
         QtLabs.Menu {
@@ -98,6 +99,11 @@ ApplicationWindow {
 
         ColumnLayout {
             CheckBox {
+                id: stretchCanvas
+                checked: true
+                text: qsTr("Stretch Canvas to Fill Window")
+            }
+            CheckBox {
                 id: enableAutomaticViewPosition
                 checked: true
                 text: qsTr("Center View Automatically")
@@ -152,29 +158,38 @@ ApplicationWindow {
     }
 
         // Row 1, Column 2
-    header: RowLayout {
+    header: GridLayout {
             Layout.margins: 4
+            columns: 4
+            width: parent.width
 
             Label {
+                color: "white"
+                Layout.minimumWidth: mainWindow.width / 4
                 text: Math.floor(ApplicationModel.currentFps) + " FPS"
             }
             Label {
+                color: "white"
+                Layout.minimumWidth: mainWindow.width / 4
                 text: ApplicationModel.currentPopulation + " Living Cells"
             }
             Label {
+                color: "white"
+                Layout.minimumWidth: mainWindow.width / 4
                 text: ApplicationModel.generation + " Generations"
             }
             Label {
+                color: "white"
+                Layout.minimumWidth: mainWindow.width / 4
                 text: Math.round(ApplicationModel.generationsPerSecond * 100) / 100 + " Generations/sec"
             }
         }
     ConwayCanvas {
         objectName: "conwayCanvas"
         id: conwayCanvas
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+        width: stretchCanvas.checked ? parent.width : Math.min(parent.width, parent.height)
+        height: stretchCanvas.checked ? parent.height : Math.min(parent.width, parent.height)
+        anchors.centerIn: parent
         Layout.columnSpan: 2
         drawGridLines: drawGridLines.checked
         enableUserViewPosition: !enableAutomaticViewPosition.checked
