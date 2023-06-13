@@ -39,8 +39,13 @@ static void drawGridLines(QSGSimpleRectNode* parent, uint64_t gameSize, double c
 ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
 {
     GridStatistics stats{};
-    stats.gridSize = std::max(_latestState.largestXSeen, _latestState.largestYSeen) * 2 + 1;
-    if (getEnableUserView()) {
+    if (getEnableUserViewDimensions()) {
+        stats.gridSize = std::max(getUserViewWidth(), getUserViewHeight());
+    }
+    else {
+        stats.gridSize = std::max(_latestState.largestXSeen, _latestState.largestYSeen) * 2 + 1;
+    }
+    if (getEnableUserViewPosition()) {
         //stats.gridSize = getUserViewSize(); (unsupported for now)
         stats.originX = getUserViewX();
         stats.originY = getUserViewY();

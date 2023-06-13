@@ -26,10 +26,12 @@ signals:
 
 private:
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
-    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewSize, UserViewSize, 5);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewWidth, UserViewWidth, 5);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewHeight, UserViewHeight, 5);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewX, UserViewX, 0);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewY, UserViewY, 0);
-    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserView, EnableUserView, false);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserViewPosition, EnableUserViewPosition, false);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserViewDimensions, EnableUserViewDimensions, false);
 
     ConwayGame::State _latestState;
     QTimer _renderTimer;

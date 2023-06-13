@@ -52,11 +52,9 @@ ApplicationWindow {
         QtLabs.Menu {
             title: qsTr("&View")
             QtLabs.MenuItem {
-                text: qsTr("&Automatic")
-                checkable: true
-                checked: true
-                shortcut: "Ctrl+A"
-                id: enableAutomaticView
+                text: qsTr("&Settings")
+                shortcut: "Ctrl+S"
+                onTriggered: viewSettingsDialog.open()
             }
             QtLabs.MenuItem {
                 text: qsTr("Reset to &Default")
@@ -74,6 +72,7 @@ ApplicationWindow {
 
     Dialog {
         id: generationLifespanDialog
+        anchors.centerIn: parent
         modal: true
         standardButtons: Dialog.Ok
         title: "Generation Lifespan (ms)"
@@ -89,6 +88,69 @@ ApplicationWindow {
             Keys.onPressed: (event) => { if (event.key == Qt.Key_Return) { generationLifespanDialog.close() } }
         }
     }
+
+    Dialog {
+        id: viewSettingsDialog
+        modal: true
+        standardButtons: Dialog.Ok
+        title: "View Settings"
+        anchors.centerIn: parent
+
+        ColumnLayout {
+            CheckBox {
+                id: enableAutomaticViewPosition
+                checked: true
+                text: qsTr("Center View Automatically")
+            }
+            Label {
+                text: "Center X"
+            }
+            TextField {
+                    enabled: !enableAutomaticViewPosition.checked
+                    validator: IntValidator {}
+                    text: conwayCanvas.userViewX
+                    id: userViewXField
+                    onEditingFinished: () => conwayCanvas.userViewX = +(userViewXField.text)
+            }
+            Label {
+                text: "Center Y"
+            }
+            TextField {
+                enabled: !enableAutomaticViewPosition.checked
+                validator: IntValidator {}
+                text: conwayCanvas.userViewY
+                id: userViewYField
+                onEditingFinished: () => conwayCanvas.userViewY = +(userViewYField.text)
+            }
+            CheckBox {
+                id: enableAutomaticViewDimensions
+                checked: true
+                text: qsTr("Size View Automatically")
+            }
+            Label {
+                text: "Width"
+            }
+            TextField {
+                enabled: !enableAutomaticViewDimensions.checked
+                validator: IntValidator {}
+                text: conwayCanvas.userViewWidth
+                id: userViewWidthField
+                onEditingFinished: () => conwayCanvas.userViewWidth = +(userViewWidthField.text)
+            }
+            Label {
+                text: "Height"
+            }
+            TextField {
+                enabled: !enableAutomaticViewDimensions.checked
+                validator: IntValidator {}
+                text: conwayCanvas.userViewHeight
+                id: userViewHeightField
+                onEditingFinished: () => conwayCanvas.userViewHeight = +(userViewHeightField.text)
+            }
+        }
+
+    }
+
         // Row 1, Column 2
     header: RowLayout {
             Layout.margins: 4
@@ -115,10 +177,11 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         Layout.columnSpan: 2
         drawGridLines: drawGridLines.checked
-        enableUserView: !enableAutomaticView.checked
+        enableUserViewPosition: !enableAutomaticViewPosition.checked
+        enableUserViewDimensions: !enableAutomaticViewDimensions.checked
         focus: true
         Keys.onPressed: (event) => {
-            if (enableAutomaticView.checked) return
+            if (enableAutomaticViewPosition.checked) return
             if (event.key == Qt.Key_Left) {
                 conwayCanvas.userViewX -= 1
             } else if (event.key == Qt.Key_Right) {
