@@ -14,13 +14,13 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
     GridStatistics stats{};
     uint64_t minWidth, minHeight;
     if (getEnableUserViewDimensions()) {
-        // Only rendering around a single point
         minWidth = getUserViewMinimumWidth();
         minHeight = getUserViewMinimumHeight();
     }
     else {
         minWidth = (_latestState.largestXSeen) * 2 + 1;
         minHeight = (_latestState.largestYSeen) * 2 + 1;
+        // TODO: move to frontend
         setUserViewMinimumWidth(minWidth);
         setUserViewMinimumHeight(minHeight);
     }
@@ -29,15 +29,16 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
     stats.viewHeight = height() / stats.cellSideLengthPx;
 
     if (!getEnableUserViewDimensions()) {
-        // Centering around the origin when autosizing by using an odd view size makes simulation appear smoother
+        // Autosizing looks smoother when always using odd width + height
 
         // width and height are constants
         // minWidth and minHeight are guaranteed to be odd
         // L = max(minWidth, minHeight), S = min(minWidth, minHeight)
-        // Maximum Side Length, X = (width or height respectively) / S
+        // Smallest side length allowed, X = (width or height respectively) / S
         // L2 = (width or height respectively) / X = the number of cells that fit in the less cramped direction
         // L2 >= L trivially because we picked size based on the more cramped direction
-        // if L2 is even, we can subtract one because we know L2 >= L and L is odd
+        // if L2 is even, we can subtract one because we know L2 >= L and L is odd\
+        // We don't have to track which one is L2 because S cannot be even
         if (stats.viewWidth % 2 == 0) stats.viewWidth--;
         if (stats.viewHeight % 2 == 0) stats.viewHeight--;
     }
@@ -54,32 +55,17 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
     }
     stats.paddingXPx = width() - stats.viewWidth * stats.cellSideLengthPx;
     stats.paddingYPx = height() - stats.viewHeight * stats.cellSideLengthPx;
+
+    // stats.viewWidth / 2 and stats.viewHeight / 2 will give the origin's position in view-space
+    // We shift the origin by 1px to leave space for a border
+    // TODO: borders are not actually pixel perfect
     stats.viewOriginXPx = ((stats.viewWidth / 2) * stats.cellSideLengthPx) + 1 + stats.paddingXPx / 2;
     stats.viewOriginYPx = ((stats.viewHeight / 2) * stats.cellSideLengthPx) + 1 + stats.paddingYPx / 2;
     return stats;
 }
 
-// Origin is in top left
-// Rectangles are positioned from top left
-QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
+void ConwayCanvas::renderLatestGrid(QSGNode* parent)
 {
-    _latestState = emit requestLatestState();
-
-    QSGSimpleRectNode* parent = static_cast<QSGSimpleRectNode*>(node);
-    if (!parent) {
-        parent = new QSGSimpleRectNode();
-        parent->setColor(Qt::black);
-    }
-    QRectF rect = boundingRect();
-    parent->setRect(rect);
-
-
-    while (parent->childCount() != 0) {
-        QSGSimpleRectNode *toDelete = static_cast<QSGSimpleRectNode*>(parent->firstChild());
-        parent->removeChildNode(toDelete);
-        delete toDelete;
-    }
-
     const GridStatistics grid = getGridStatistics();
 
     for (const auto& [cellPosition, _] : _latestState.grid) {
@@ -96,9 +82,14 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             std::max(grid.cellSideLengthPx - 1, 1.));
         parent->appendChildNode(rectToRender);
     }
+}
 
+void ConwayCanvas::renderGridLines(QSGNode* parent)
+{
+    const GridStatistics grid = getGridStatistics();
 
-    if (getDrawGridLines() && grid.viewWidth < (width() / 3) && grid.viewHeight < (height() / 3)) {
+    const bool viewTooLarge = (grid.viewWidth >= (width() / 3) || grid.viewHeight >= (height() / 3));
+    if (getDrawGridLines() && !viewTooLarge) {
         auto createLine = [&]() {
             QSGSimpleRectNode* rect = new QSGSimpleRectNode;
             rect->setFlag(QSGNode::Flag::OwnedByParent, false);
@@ -106,7 +97,8 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             parent->appendChildNode(rect);
             return rect;
         };
-        const bool skipFirstVertLine = grid.paddingXPx == 0;
+        // Verticle line at position 0 looks strange
+        const bool skipFirstVertLine = (grid.paddingXPx == 0);
         for (uint64_t i = skipFirstVertLine; i <= grid.viewWidth; ++i) {
             QSGSimpleRectNode* vertical = createLine();
             vertical->setRect(
@@ -126,6 +118,27 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             );
         }
     }
+}
+
+QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
+{
+    _latestState = emit requestLatestState();
+
+    QSGSimpleRectNode* parent = static_cast<QSGSimpleRectNode*>(node);
+    if (!parent) {
+        parent = new QSGSimpleRectNode();
+        parent->setColor(Qt::black);
+    }
+    parent->setRect(boundingRect());
+
+    while (parent->childCount() != 0) {
+        QSGSimpleRectNode *toDelete = static_cast<QSGSimpleRectNode*>(parent->firstChild());
+        parent->removeChildNode(toDelete);
+        delete toDelete;
+    }
+
+    renderLatestGrid(parent);
+    renderGridLines(parent);
 
     return parent;
 }

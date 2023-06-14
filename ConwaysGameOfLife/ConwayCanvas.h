@@ -52,4 +52,6 @@ private:
         double viewOriginYPx;
     };
     GridStatistics getGridStatistics();
+    void renderLatestGrid(QSGNode* parent);
+    void renderGridLines(QSGNode* parent);
 };
