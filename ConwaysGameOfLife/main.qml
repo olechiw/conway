@@ -128,7 +128,7 @@ ApplicationWindow {
             TextField {
                 enabled: !enableAutomaticView.checked
                 validator: IntValidator {}
-                text: qsTr(conwayCanvas.userViewMinimumWidth)
+                text: conwayCanvas.userViewMinimumWidth
                 id: userViewWidthField
                 onEditingFinished: () => conwayCanvas.userViewMinimumWidth = +(userViewWidthField.text)
             }
@@ -138,7 +138,7 @@ ApplicationWindow {
             TextField {
                 enabled: !enableAutomaticView.checked
                 validator: IntValidator {}
-                text: qsTr(conwayCanvas.userViewMinimumHeight)
+                text: conwayCanvas.userViewMinimumHeight
                 id: userViewHeightField
                 onEditingFinished: () => conwayCanvas.userViewMinimumHeight = +(userViewHeightField.text)
             }
