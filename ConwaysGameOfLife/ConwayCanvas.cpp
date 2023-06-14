@@ -68,9 +68,9 @@ void ConwayCanvas::renderLatestGrid(QSGNode* parent)
 {
     const GridStatistics grid = getGridStatistics();
 
-    for (const auto& [cellPosition, _] : _latestState.grid) {
-        const auto renderX = (cellPosition.x - grid.viewOriginX) * grid.cellSideLengthPx + grid.viewOriginXPx;
-        const auto renderY = (cellPosition.y - grid.viewOriginY) * grid.cellSideLengthPx + grid.viewOriginYPx;
+    for (const auto& [x, y] : _latestState.grid) {
+        const auto renderX = (x - grid.viewOriginX) * grid.cellSideLengthPx + grid.viewOriginXPx;
+        const auto renderY = (y - grid.viewOriginY) * grid.cellSideLengthPx + grid.viewOriginYPx;
         if (!boundingRect().contains(renderX, renderY)) continue;
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
