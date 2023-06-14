@@ -12,7 +12,6 @@ ApplicationWindow {
     title: qsTr("Conway's Game of Life")
     objectName: "mainWindow"
     id: mainWindow
-    color: "black"
 
     QtLabs.MenuBar {
         QtLabs.Menu {
@@ -99,59 +98,49 @@ ApplicationWindow {
 
         ColumnLayout {
             CheckBox {
-                id: stretchCanvas
+                id: enableAutomaticView
                 checked: true
-                text: qsTr("Stretch Canvas to Fill Window")
-            }
-            CheckBox {
-                id: enableAutomaticViewPosition
-                checked: true
-                text: qsTr("Center View Automatically")
+                text: qsTr("Set View Automatically")
             }
             Label {
-                text: "Center X"
+                text: "View X"
             }
             TextField {
-                    enabled: !enableAutomaticViewPosition.checked
+                    enabled: !enableAutomaticView.checked
                     validator: IntValidator {}
                     text: conwayCanvas.userViewX
                     id: userViewXField
                     onEditingFinished: () => conwayCanvas.userViewX = +(userViewXField.text)
             }
             Label {
-                text: "Center Y"
+                text: "View Y"
             }
             TextField {
-                enabled: !enableAutomaticViewPosition.checked
+                enabled: !enableAutomaticView.checked
                 validator: IntValidator {}
                 text: conwayCanvas.userViewY
                 id: userViewYField
                 onEditingFinished: () => conwayCanvas.userViewY = +(userViewYField.text)
             }
-            CheckBox {
-                id: enableAutomaticViewDimensions
-                checked: true
-                text: qsTr("Size View Automatically")
-            }
             Label {
-                text: "Width"
+                text: "View Width"
             }
             TextField {
-                enabled: !enableAutomaticViewDimensions.checked
+                enabled: !enableAutomaticView.checked
                 validator: IntValidator {}
-                text: conwayCanvas.userViewWidth
+                text: qsTr(conwayCanvas.userViewMinimumWidth)
                 id: userViewWidthField
-                onEditingFinished: () => conwayCanvas.userViewWidth = +(userViewWidthField.text)
+                onEditingFinished: () => conwayCanvas.userViewMinimumWidth = +(userViewWidthField.text)
             }
             Label {
-                text: "Height"
+                text: "View Height"
             }
             TextField {
-                enabled: !enableAutomaticViewDimensions.checked
+                enabled: !enableAutomaticView.checked
                 validator: IntValidator {}
-                text: conwayCanvas.userViewHeight
+                text: qsTr(conwayCanvas.userViewMinimumHeight)
                 id: userViewHeightField
-                onEditingFinished: () => conwayCanvas.userViewHeight = +(userViewHeightField.text)
+                onEditingFinished: () => conwayCanvas.userViewMinimumHeight = +(userViewHeightField.text)
             }
         }
 
@@ -164,22 +153,18 @@ ApplicationWindow {
             width: parent.width
 
             Label {
-                color: "white"
                 Layout.minimumWidth: mainWindow.width / 4
                 text: Math.floor(ApplicationModel.currentFps) + " FPS"
             }
             Label {
-                color: "white"
                 Layout.minimumWidth: mainWindow.width / 4
                 text: ApplicationModel.currentPopulation + " Living Cells"
             }
             Label {
-                color: "white"
                 Layout.minimumWidth: mainWindow.width / 4
                 text: ApplicationModel.generation + " Generations"
             }
             Label {
-                color: "white"
                 Layout.minimumWidth: mainWindow.width / 4
                 text: Math.round(ApplicationModel.generationsPerSecond * 100) / 100 + " Generations/sec"
             }
@@ -187,16 +172,16 @@ ApplicationWindow {
     ConwayCanvas {
         objectName: "conwayCanvas"
         id: conwayCanvas
-        width: stretchCanvas.checked ? parent.width : Math.min(parent.width, parent.height)
-        height: stretchCanvas.checked ? parent.height : Math.min(parent.width, parent.height)
+        width: parent.width
+        height: parent.height
         anchors.centerIn: parent
         Layout.columnSpan: 2
         drawGridLines: drawGridLines.checked
-        enableUserViewPosition: !enableAutomaticViewPosition.checked
-        enableUserViewDimensions: !enableAutomaticViewDimensions.checked
+        enableUserViewPosition: !enableAutomaticView.checked
+        enableUserViewDimensions: !enableAutomaticView.checked
         focus: true
         Keys.onPressed: (event) => {
-            if (enableAutomaticViewPosition.checked) return
+            if (enableAutomaticView.checked) return
             if (event.key == Qt.Key_Left) {
                 conwayCanvas.userViewX -= 1
             } else if (event.key == Qt.Key_Right) {
@@ -205,6 +190,12 @@ ApplicationWindow {
                 conwayCanvas.userViewY -= 1
             } else if (event.key == Qt.Key_Down) {
                 conwayCanvas.userViewY += 1
+            } else if (event.key == Qt.Key_Minus && conwayCanvas.userViewMinimumHeight > 3 && conwayCanvas.userViewMinimumWidth > 3) {
+                conwayCanvas.userViewMinimumHeight += 1
+                conwayCanvas.userViewMinimumWidth += 1
+            } else if (event.key == Qt.Key_Plus && conwayCanvas.userViewMinimumHeight > 3 && conwayCanvas.userViewMinimumWidth > 3) {
+                conwayCanvas.userViewMinimumHeight -= 1
+                conwayCanvas.userViewMinimumWidth -= 1
             }
         }
     }

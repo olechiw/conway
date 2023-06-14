@@ -9,7 +9,7 @@ ConwayCanvas::ConwayCanvas(QQuickItem*)
     setAcceptedMouseButtons(Qt::LeftButton);
 }
 
-static void drawGridLines(QSGSimpleRectNode* parent, uint64_t gameSize, double cellWidth, double cellHeight) {
+static void drawGridLines(QSGSimpleRectNode* parent, uint64_t viewWidth, uint64_t viewHeight, double cellLengthPx) {
     auto createLine = [&]() {
         QSGSimpleRectNode* rect = new QSGSimpleRectNode;
         rect->setFlag(QSGNode::Flag::OwnedByParent, false);
@@ -17,19 +17,20 @@ static void drawGridLines(QSGSimpleRectNode* parent, uint64_t gameSize, double c
         parent->appendChildNode(rect);
         return rect;
     };
-    for (uint64_t i = 1; i < gameSize; ++i) {
+    for (uint64_t i = 1; i <= viewWidth; ++i) {
         QSGSimpleRectNode* vertical = createLine();
         vertical->setRect(
-            i * cellWidth,
+            i * cellLengthPx,
             0,
             1.0,
             parent->rect().height()
         );
-
+    }
+    for (uint64_t i = 0; i <= viewHeight; ++i) {
         QSGSimpleRectNode* horizontal = createLine();
         horizontal->setRect(
             0,
-            i * cellHeight,
+            i * cellLengthPx,
             parent->rect().width(),
             1.0
         );
@@ -39,23 +40,28 @@ static void drawGridLines(QSGSimpleRectNode* parent, uint64_t gameSize, double c
 ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
 {
     GridStatistics stats{};
+    uint64_t minWidth, minHeight;
     if (getEnableUserViewDimensions()) {
-        stats.gridSize = std::max(getUserViewWidth(), getUserViewHeight());
+        // Only rendering around a single point
+        minWidth = getUserViewMinimumWidth();
+        minHeight = getUserViewMinimumHeight();
     }
     else {
-        stats.gridSize = std::max(_latestState.largestXSeen, _latestState.largestYSeen) * 2 + 1;
+        minWidth = (_latestState.largestXSeen) * 2 + 1;
+        minHeight = (_latestState.largestYSeen) * 2 + 1;
     }
+    stats.cellSideLengthPx = std::min(width() / minWidth, height() / minHeight);
+    stats.viewWidth = width() / stats.cellSideLengthPx;
+    stats.viewHeight = height() / stats.cellSideLengthPx;
+
     if (getEnableUserViewPosition()) {
-        //stats.gridSize = getUserViewSize(); (unsupported for now)
-        stats.originX = getUserViewX();
-        stats.originY = getUserViewY();
+        stats.viewOriginX = getUserViewX();
+        stats.viewOriginY = getUserViewY();
     }
     else {
-        stats.originX = 0;
-        stats.originY = 0;
+        stats.viewOriginX = 0;
+        stats.viewOriginY = 0;
     }
-    stats.cellWidth = width() / stats.gridSize;
-    stats.cellHeight = height() / stats.gridSize;
     return stats;
 }
 
@@ -80,12 +86,13 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     }
 
     const GridStatistics grid = getGridStatistics();
-    const auto originOffsetX = (width() / 2 - grid.cellWidth / 2 + 1);
-    const auto originOffsetY = (height() / 2 - grid.cellHeight / 2 + 1);
+    // Even can work but only if we track directions!!!!!
+    const auto originOffsetX = ((grid.viewWidth / 2) * grid.cellSideLengthPx) + 1;
+    const auto originOffsetY = ((grid.viewHeight / 2) * grid.cellSideLengthPx) + 1;
 
     for (const auto& [cellPosition, _] : _latestState.grid) {
-        const auto renderX = (cellPosition.x - grid.originX) * grid.cellWidth + originOffsetX;
-        const auto renderY = (cellPosition.y - grid.originY) * grid.cellHeight + originOffsetY;
+        const auto renderX = (cellPosition.x - grid.viewOriginX) * grid.cellSideLengthPx + originOffsetX;
+        const auto renderY = (cellPosition.y - grid.viewOriginY) * grid.cellSideLengthPx + originOffsetY;
         if (!boundingRect().contains(renderX, renderY)) continue;
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
@@ -93,12 +100,12 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
         rectToRender->setRect(
             renderX,
             renderY,
-            std::max(grid.cellWidth - 1, 1.),
-            std::max(grid.cellHeight - 1, 1.));
+            std::max(grid.cellSideLengthPx - 1, 1.),
+            std::max(grid.cellSideLengthPx - 1, 1.));
         n->appendChildNode(rectToRender);
     }
-    if (getDrawGridLines() && grid.gridSize < (boundingRect().width() / 3)) {
-        drawGridLines(n, grid.gridSize, grid.cellWidth, grid.cellHeight);
+    if (getDrawGridLines() && grid.viewWidth < (width() / 3) && grid.viewHeight < (height() / 3)) {
+        drawGridLines(n, grid.viewWidth, grid.viewHeight, grid.cellSideLengthPx);
     }
 
     return n;
@@ -107,7 +114,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 void ConwayCanvas::mousePressEvent(QMouseEvent* event)
 {
     GridStatistics grid = getGridStatistics();
-    const int64_t x = int64_t(event->pos().x() / grid.cellWidth) - int64_t(grid.gridSize / 2) + grid.originX;
-    const int64_t y = int64_t(event->pos().y() / grid.cellHeight) - int64_t(grid.gridSize / 2) + grid.originY;
+    const int64_t x = int64_t(event->pos().x() / grid.cellSideLengthPx) - int64_t(grid.viewWidth / 2) + grid.viewOriginX;
+    const int64_t y = int64_t(event->pos().y() / grid.cellSideLengthPx) - int64_t(grid.viewHeight / 2) + grid.viewOriginY;
     emit onClicked(x, y);
 }

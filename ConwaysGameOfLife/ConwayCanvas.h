@@ -26,8 +26,8 @@ signals:
 
 private:
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, drawGridLines, DrawGridLines, false);
-    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewWidth, UserViewWidth, 5);
-    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewHeight, UserViewHeight, 5);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewMinimumWidth, UserViewMinimumWidth, 5);
+    Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, uint64_t, userViewMinimumHeight, UserViewMinimumHeight, 5);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewX, UserViewX, 0);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, int64_t, userViewY, UserViewY, 0);
     Q_SIMPLE_BOUND_PROPERTY(ConwayCanvas, bool, enableUserViewPosition, EnableUserViewPosition, false);
@@ -36,12 +36,12 @@ private:
     ConwayGame::State _latestState;
     QTimer _renderTimer;
     struct GridStatistics {
-        uint64_t gridSize; // Width or Height, grid is always a square (for now)
-        double cellWidth;
-        double cellHeight;
+        uint64_t viewWidth;
+        uint64_t viewHeight;
+        double cellSideLengthPx;
         // Origin of view
-        double originX;
-        double originY;
+        double viewOriginX;
+        double viewOriginY;
     };
     GridStatistics getGridStatistics();
 };
