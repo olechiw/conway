@@ -67,10 +67,7 @@ int main(int argc, char *argv[])
 
 /*
 * Snapshotting
-* Ability to zoom in/out, reworking the concept of "size" to be less jank (part of the ApplicationModel?)
 * Evaluate different simulation algorithms
-* Pan around? (arrow keys?) + reset view
-* Menubar with hotkeys to make controls more organized
 * Check all integer overflows
 * Wrapping behavior
 */
