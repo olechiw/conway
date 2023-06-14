@@ -28,6 +28,20 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
     stats.viewWidth = width() / stats.cellSideLengthPx;
     stats.viewHeight = height() / stats.cellSideLengthPx;
 
+    if (!getEnableUserViewDimensions()) {
+        // Centering around the origin when autosizing by using an odd view size makes simulation appear smoother
+
+        // width and height are constants
+        // minWidth and minHeight are guaranteed to be odd
+        // L = max(minWidth, minHeight), S = min(minWidth, minHeight)
+        // Maximum Side Length, X = (width or height respectively) / S
+        // L2 = (width or height respectively) / X = the number of cells that fit in the less cramped direction
+        // L2 >= L trivially because we picked size based on the more cramped direction
+        // if L2 is even, we can subtract one because we know L2 >= L and L is odd
+        if (stats.viewWidth % 2 == 0) stats.viewWidth--;
+        if (stats.viewHeight % 2 == 0) stats.viewHeight--;
+    }
+
     if (getEnableUserViewPosition()) {
         stats.viewOriginX = getUserViewX();
         stats.viewOriginY = getUserViewY();
