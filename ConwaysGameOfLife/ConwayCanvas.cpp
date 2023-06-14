@@ -52,6 +52,10 @@ ConwayCanvas::GridStatistics ConwayCanvas::getGridStatistics()
         setUserViewX(0);
         setUserViewY(0);
     }
+    stats.paddingXPx = width() - stats.viewWidth * stats.cellSideLengthPx;
+    stats.paddingYPx = height() - stats.viewHeight * stats.cellSideLengthPx;
+    stats.viewOriginXPx = ((stats.viewWidth / 2) * stats.cellSideLengthPx) + 1 + stats.paddingXPx / 2;
+    stats.viewOriginYPx = ((stats.viewHeight / 2) * stats.cellSideLengthPx) + 1 + stats.paddingYPx / 2;
     return stats;
 }
 
@@ -77,15 +81,10 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
     }
 
     const GridStatistics grid = getGridStatistics();
-    // Even can work but only if we track directions!!!!!
-    const auto paddingX = uint64_t(width()) % uint64_t(grid.viewWidth * grid.cellSideLengthPx);
-    const auto paddingY = uint64_t(height()) % uint64_t(grid.viewHeight * grid.cellSideLengthPx);
-    const auto originOffsetX = ((grid.viewWidth / 2) * grid.cellSideLengthPx) + 1 + paddingX / 2;
-    const auto originOffsetY = ((grid.viewHeight / 2) * grid.cellSideLengthPx) + 1 + paddingY / 2;
 
     for (const auto& [cellPosition, _] : _latestState.grid) {
-        const auto renderX = (cellPosition.x - grid.viewOriginX) * grid.cellSideLengthPx + originOffsetX;
-        const auto renderY = (cellPosition.y - grid.viewOriginY) * grid.cellSideLengthPx + originOffsetY;
+        const auto renderX = (cellPosition.x - grid.viewOriginX) * grid.cellSideLengthPx + grid.viewOriginXPx;
+        const auto renderY = (cellPosition.y - grid.viewOriginY) * grid.cellSideLengthPx + grid.viewOriginYPx;
         if (!boundingRect().contains(renderX, renderY)) continue;
         QSGSimpleRectNode* rectToRender = new QSGSimpleRectNode;
         rectToRender->setFlag(QSGNode::Flag::OwnedByParent, false);
@@ -107,10 +106,11 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             parent->appendChildNode(rect);
             return rect;
         };
-        for (uint64_t i = 1; i <= grid.viewWidth; ++i) {
+        const bool skipFirstVertLine = grid.paddingXPx == 0;
+        for (uint64_t i = skipFirstVertLine; i <= grid.viewWidth; ++i) {
             QSGSimpleRectNode* vertical = createLine();
             vertical->setRect(
-                i * grid.cellSideLengthPx + paddingX / 2,
+                i * grid.cellSideLengthPx + grid.paddingXPx / 2,
                 0,
                 1.0,
                 height()
@@ -120,7 +120,7 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
             QSGSimpleRectNode* horizontal = createLine();
             horizontal->setRect(
                 0,
-                i * grid.cellSideLengthPx + paddingY / 2,
+                i * grid.cellSideLengthPx + grid.paddingYPx / 2,
                 width(),
                 1.0
             );
@@ -133,7 +133,14 @@ QSGNode* ConwayCanvas::updatePaintNode(QSGNode* node, UpdatePaintNodeData*)
 void ConwayCanvas::mousePressEvent(QMouseEvent* event)
 {
     GridStatistics grid = getGridStatistics();
-    const int64_t x = int64_t(event->pos().x() / grid.cellSideLengthPx) - int64_t(grid.viewWidth / 2) + grid.viewOriginX;
-    const int64_t y = int64_t(event->pos().y() / grid.cellSideLengthPx) - int64_t(grid.viewHeight / 2) + grid.viewOriginY;
-    emit onClicked(x, y);
+    auto xFrac = (event->pos().x() - grid.viewOriginXPx) / grid.cellSideLengthPx;
+    auto yFrac = (event->pos().y() - grid.viewOriginYPx) / grid.cellSideLengthPx;
+    // Fractions are from top-left corner so round up negative numbers
+    const auto round = [](const auto val) {
+        if (val < 0)
+            return int64_t(val - 1);
+        else
+            return int64_t(val);
+    };
+    emit onClicked(round(xFrac), round(yFrac));
 }

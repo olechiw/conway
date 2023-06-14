@@ -36,12 +36,20 @@ private:
     ConwayGame::State _latestState;
     QTimer _renderTimer;
     struct GridStatistics {
+        // View dimensions in grid-space
         uint64_t viewWidth;
         uint64_t viewHeight;
         double cellSideLengthPx;
-        // Origin of view
-        double viewOriginX;
-        double viewOriginY;
+        // Origin of view in grid-space
+        int64_t viewOriginX;
+        int64_t viewOriginY;
+        // Location of (viewOriginX - viewWidth / 2, viewOriginY - viewHeight / 2) in screen-space
+        // a.k.a the top leftmost fully visible cell in screen-space
+        double paddingXPx;
+        double paddingYPx;
+        // Top-left of (viewOriginX, viewOriginY) in screen-space
+        double viewOriginXPx;
+        double viewOriginYPx;
     };
     GridStatistics getGridStatistics();
 };
